@@ -22,4 +22,10 @@ int main(int argc, char** argv) {
     return (EXIT_SUCCESS);
 }
 
+<<<<<<< HEAD
 //test 
+=======
+
+
+//hello
+>>>>>>> 13d776f9176a317cb16fd4bb9ee0c4e8d2c2f6e9
