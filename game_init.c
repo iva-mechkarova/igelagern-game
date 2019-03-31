@@ -45,36 +45,52 @@ int initialize_players(player players[]){
     
     //YOU WILL NEED TO IMPLEMENT THIS FUNCTION IN THIS LAB
     int i=0;
-    char option;
-    printf("-------------------Colours-------------------\n");
-    printf("[R]ED [B]LUE [G]REEN [Y]ELLOW [P]INK [O]RANGE\n");
     while(i<6){
         printf("Player For Position %d :",i);
-        fgets(players[i].playername,20,stdin);
+        fgets(players[i].playername,10,stdin);
         if(players[i].playername[0] == '\n')
             break;
-        printf("Player Color :");
-        scanf("%c",&option);
-        option=getchar();
-        switch(option){
-            case 'R': players[i].playersToken.col=RED;printf(" test RED\n");
-                    break;
-            case 'B': players[i].playersToken.col=BLU;
-                    break;
-            case 'G': players[i].playersToken.col=GREEN;
-                    break;
-            case 'Y': players[i].playersToken.col=YELLOW;
-                    break;
-            case 'P': players[i].playersToken.col=PINK;
-                    break;
-            case 'O': players[i].playersToken.col=ORANGE;
-            default:break;
-        }
         i++;
     }
     return i;
 }
 
-   
-     
-
+int initialize_colour(player players[],int numPlayers){   
+    int i=0,option,loop;
+    printf("----------------------Colours----------------------\n");
+    printf("[1]RED [2]BLUE [3]GREEN [4]YELLOW [5]PINK [6]ORANGE\n");
+    printf("---------------------------------------------------\n");
+    
+    while(i<numPlayers)
+    {
+        printf("Select colour for %s",players[i].playername);
+        scanf("%d",&option);
+        
+        switch(option){
+            case 1: players[i].playersToken.col=RED;
+                    break;
+            case 2: players[i].playersToken.col=BLU;
+                    break;
+            case 3: players[i].playersToken.col=GREEN;
+                    break;
+            case 4: players[i].playersToken.col=YELLOW;
+                    break;
+            case 5: players[i].playersToken.col=PINK;
+                    break;
+            case 6: players[i].playersToken.col=ORANGE;
+            default: break;
+        }
+        
+        loop=0;
+        for(int x=0; x<i; x++)
+            {
+                if (players[i].playersToken.col==players[x].playersToken.col) 
+                {
+                    printf("Error colour already seleceted!\n");
+                    loop=1;
+                }
+        }
+        if(loop==0)
+            i++;
+    }
+}

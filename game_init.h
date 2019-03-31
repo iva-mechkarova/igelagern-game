@@ -42,7 +42,7 @@ typedef struct square{
  * such as a name and a color.
  */
 typedef struct player{
-    char playername[20];
+    char playername[10];
     token playersToken;
     
 }player; 
@@ -64,6 +64,7 @@ void initialize_board(square board[NUM_ROWS][NUM_COLUMNS]);
  *
  */
 int initialize_players(player players[]);
+int initialize_colour(player players[],int numPlayers);
 
 
 
