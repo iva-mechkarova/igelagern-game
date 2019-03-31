@@ -51,15 +51,11 @@ int initialize_players(player players[]){
     while(i<6){
         printf("Player For Position %d :",i);
         fgets(players[i].playername,20,stdin);
-        strtok(players[i].playername, "\n");
         if(players[i].playername[0] == '\n')
             break;
         printf("Player Color :");
         scanf("%c",&option);
-        int c;
-        do {
-        c = getchar();
-        } while(c != EOF && c != '\n');
+        option=getchar();
         switch(option){
             case 'R': players[i].playersToken.col=RED;printf(" test RED\n");
                     break;
@@ -72,7 +68,7 @@ int initialize_players(player players[]){
             case 'P': players[i].playersToken.col=PINK;
                     break;
             case 'O': players[i].playersToken.col=ORANGE;
-            default: break;
+            default:break;
         }
         i++;
     }
