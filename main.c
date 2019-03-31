@@ -46,9 +46,15 @@ int main(int argc, char** argv) {
     //manages the turns of the game and identifies a winner
     play_game(board, players, numPlayers);
     
+    //TEST-------------------------------------------------------
+    int z=0;
+    while(z<numPlayers){
+        printf("Player Pos %d Name : %s",z, players[z].playername);
+        z++;
+    }
+    printf("Number of players:%d",numPlayers);
+    
     return 0;
-    
-    
 
 }
 

@@ -42,9 +42,17 @@ void initialize_board(square board[NUM_ROWS][NUM_COLUMNS]){
 int initialize_players(player players[]){
     
     //YOU WILL NEED TO IMPLEMENT THIS FUNCTION IN THIS LAB
-        return 0;
+    int i=0;
+    while(i<6){
+        printf("Player For Position %d : ",i);
+        fgets(players[i].playername,20,stdin);
+        if(players[i].playername[0] == '\n')
+            break;
+        i++;
     }
-    
+    return i;
+}
+
    
      
 
