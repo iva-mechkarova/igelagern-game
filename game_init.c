@@ -8,6 +8,7 @@
 #include "game_init.h"
 #include "game_logic.h"
 #include <stdio.h>
+#include <string.h>
 
 
 /*
@@ -50,6 +51,9 @@ int initialize_players(player players[]){
     while(i<6){
         printf("Player For Position %d :",i);
         fgets(players[i].playername,20,stdin);
+        strtok(players[i].playername, "\n");
+        if(players[i].playername[0] == '\n')
+            break;
         printf("Player Color :");
         scanf("%c",&option);
         int c;
@@ -70,8 +74,6 @@ int initialize_players(player players[]){
             case 'O': players[i].playersToken.col=ORANGE;
             default: break;
         }
-        if(players[i].playername[0] == '\n')
-            break;
         i++;
     }
     return i;
