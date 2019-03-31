@@ -8,7 +8,6 @@
 #include "game_init.h"
 #include "game_logic.h"
 #include <stdio.h>
-#include <string.h>
 
 
 /*
@@ -78,7 +77,11 @@ int initialize_colour(player players[],int numPlayers){
             case 5: players[i].playersToken.col=PINK;
                     break;
             case 6: players[i].playersToken.col=ORANGE;
-            default: break;
+            default: while(option>6)
+            {
+                printf("Error: Please select a valid colour!\n");
+                scanf("%d", &option);
+            }
         }
         
         loop=0;
@@ -86,7 +89,7 @@ int initialize_colour(player players[],int numPlayers){
             {
                 if (players[i].playersToken.col==players[x].playersToken.col) 
                 {
-                    printf("Error colour already seleceted!\n");
+                    printf("Error: Colour already seleceted!\n");
                     loop=1;
                 }
         }
