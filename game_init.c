@@ -44,21 +44,26 @@ int initialize_players(player players[]){
     
     //YOU WILL NEED TO IMPLEMENT THIS FUNCTION IN THIS LAB
     int i=0;
+    char option;
+    printf("-------------------Colours-------------------\n");
+    printf("[R]ED [B]LUE [G]REEN [Y]ELLOW [P]INK [O]RANGE\n");
     while(i<6){
-        printf("Player For Position %d : ",i);
+        printf("Player For Position %d :",i);
         fgets(players[i].playername,20,stdin);
-        switch(i){
-            case 0: players[i].playerColor=RED;
+        printf("Player Color :");
+        scanf("%c",&option);
+        switch(option){
+            case 'R': players[i].playersToken.col=RED;printf("RED");
                     break;
-            case 1: players[i].playersToken.col=BLU;
+            case 'B': players[i].playersToken.col=BLU;
                     break;
-            case 2: players[i].playersToken.col=GREEN;
+            case 'G': players[i].playersToken.col=GREEN;
                     break;
-            case 3: players[i].playersToken.col=YELLOW;
+            case 'Y': players[i].playersToken.col=YELLOW;
                     break;
-            case 4: players[i].playersToken.col=PINK;
+            case 'P': players[i].playersToken.col=PINK;
                     break;
-            case 5: players[i].playersToken.col=ORANGE;
+            case 'O': players[i].playersToken.col=ORANGE;
             default: break;
         }
         if(players[i].playername[0] == '\n')
