@@ -52,8 +52,12 @@ int initialize_players(player players[]){
         fgets(players[i].playername,20,stdin);
         printf("Player Color :");
         scanf("%c",&option);
+        int c;
+        do {
+        c = getchar();
+        } while(c != EOF && c != '\n');
         switch(option){
-            case 'R': players[i].playersToken.col=RED;printf("RED");
+            case 'R': players[i].playersToken.col=RED;printf(" test RED\n");
                     break;
             case 'B': players[i].playersToken.col=BLU;
                     break;
