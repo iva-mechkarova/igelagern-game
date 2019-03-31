@@ -77,7 +77,7 @@ int initialize_colour(player players[],int numPlayers){
             case 5: players[i].playersToken.col=PINK;
                     break;
             case 6: players[i].playersToken.col=ORANGE;
-            default: while(option>6)
+            default: while(option<1 || option>6)
             {
                 printf("Error: Please select a valid colour!\n");
                 scanf("%d", &option);
