@@ -8,7 +8,6 @@
 #include "game_init.h"
 #include "game_logic.h"
 #include <stdio.h>
-#include <string.h>
 
 
 /*
@@ -86,7 +85,7 @@ int initialize_colour(player players[],int numPlayers){
             {
                 if (players[i].col==players[x].col) 
                 {
-                    printf("Error colour already seleceted!\n");
+                    printf("Error: Colour already seleceted!\n");
                     loop=1;
                 }
         }
