@@ -7,6 +7,7 @@
 
 #include "game_init.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void printLine();
 
@@ -78,6 +79,13 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
     // TO BE IMPLEMENTED
     int minNumOfTokens = 0;
     int selectedSquare = 0;
+    int i=0;
+    while(i<6){ 
+    board[i][0].numTokens =0;
+    board[i][0].stack = (token*)malloc(sizeof(token));
+    board[i][0].stack->col = NONE;
+    i++;
+    }
     
     for (int i=0; i<4; i++)
     {
@@ -86,12 +94,25 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
             printf("Player %d please select a square\n", j);
             scanf("%d", &selectedSquare);
             
-            if(board[selectedSquare][0].stack=minNumOfTokens)
+            
+            if(board[selectedSquare][0].numTokens==minNumOfTokens && board[selectedSquare][0].stack->col!=players[j].col)
             {
-            board[selectedSquare[0].stack = (token *)malloc(sizeof(token));
-            board[selectedSquare][0].stack->col = players[j].col;
-            board[selectedSquare][0].numTokens++;
+                board[selectedSquare][0].stack = (token*)malloc(sizeof(token));
+                board[selectedSquare][0].stack->col = players[j].col;
+                board[selectedSquare][0].numTokens++;
             }
+            else
+            {
+                while (board[selectedSquare][0].numTokens!=minNumOfTokens || board[selectedSquare][0].stack->col==players[j].col)
+                {
+                    printf("Error: Selected square doesn't contain min number of token OR contains your token\n");
+                    printf("Please select a valid square:\n");
+                    scanf("%d", &selectedSquare);
+                }
+                board[selectedSquare][0].stack = (token*)malloc(sizeof(token));
+                board[selectedSquare][0].stack->col = players[j].col;
+                board[selectedSquare][0].numTokens++;
+            }       
             
             if (((numPlayers*i)+j+1)%NUM_ROWS==0)
                 minNumOfTokens++;

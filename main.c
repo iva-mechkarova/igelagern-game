@@ -45,6 +45,8 @@ int main(int argc, char** argv) {
     //on the first column of the board
     place_tokens(board, players, numPlayers);
     
+    print_board(board);
+    
     
     //manages the turns of the game and identifies a winner
     play_game(board, players, numPlayers);
@@ -53,7 +55,7 @@ int main(int argc, char** argv) {
     int z=0;
     while(z<numPlayers){
         printf("Player Pos %d Name : %s\n",z, players[z].playername);
-        switch (players[z].playersToken.col) 
+        switch (players[z].col) 
         {
             case (RED): printf("Player Pos %d Colour : %s\n", z, "RED");
             break;
