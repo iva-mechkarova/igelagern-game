@@ -66,28 +66,24 @@ int initialize_colour(player players[],int numPlayers){
         scanf("%d",&option);
         
         switch(option){
-            case 1: players[i].playersToken.col=RED;
+            case 1: players[i].col=RED;
                     break;
-            case 2: players[i].playersToken.col=BLU;
+            case 2: players[i].col=BLU;
                     break;
-            case 3: players[i].playersToken.col=GREEN;
+            case 3: players[i].col=GREEN;
                     break;
-            case 4: players[i].playersToken.col=YELLOW;
+            case 4: players[i].col=YELLOW;
                     break;
-            case 5: players[i].playersToken.col=PINK;
+            case 5: players[i].col=PINK;
                     break;
-            case 6: players[i].playersToken.col=ORANGE;
-            default: while(option<1 || option>6)
-            {
-                printf("Error: Please select a valid colour!\n");
-                scanf("%d", &option);
-            }
+            case 6: players[i].col=ORANGE;
+            default: break;
         }
         
         loop=0;
         for(int x=0; x<i; x++)
             {
-                if (players[i].playersToken.col==players[x].playersToken.col) 
+                if (players[i].col==players[x].col) 
                 {
                     printf("Error: Colour already seleceted!\n");
                     loop=1;
