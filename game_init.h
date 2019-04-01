@@ -32,6 +32,8 @@ typedef struct square{
      enum stype type;
      //the stack of tokens that can be placed on the board square
      token * stack;      
+     
+     int numTokens;
 }square;
 
 
@@ -44,6 +46,7 @@ typedef struct square{
 typedef struct player{
     char playername[10];
     enum color col;
+    int numTokensLastCol;
     
 }player; 
 
