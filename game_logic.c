@@ -7,10 +7,7 @@
 
 #include "game_init.h"
 #include <stdio.h>
-<<<<<<< HEAD
 #include <time.h>
-=======
->>>>>>> b319a0a8ac0983b69b9b097af697a005709f20d9
 #include <stdlib.h>
 
 void printLine();
