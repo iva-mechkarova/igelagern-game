@@ -133,41 +133,90 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
  */
 
 void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPlayers){ 
-    int gameLoop=0;
-    int a,b;
-    //while(gameLoop==0){
-    
-    
-    
-        
+    int a,b,choice;
+    //while(players[0].numTokensLastCol<3){
+
         //TO BE IMPLEMENTED
-        int roll = rollDice();
-        
-        
-        
-        printf("");
-        int choice;
+        printf("Would you like to move a token up/down?\n");
+        printf("Enter 1 for yes OR 0 for no:\n");
         scanf("%d",&choice);
+        
+        while(choice!=0 && choice!=1)
+        {
+            printf("ERROR: Invalid choice!\n");
+            printf("Enter 1 for yes OR 0 for no:\n");
+            scanf("%d",&choice);
+        }
+        
         if(choice==1)
         {
-            printf("Please choose Row");
+            printf("Please choose row of token you'd like to move:\n");
             scanf("%d",&a);
-            printf("Columb");
+            while(a<0 || a>5)
+            {
+                printf("ERROR: Invalid row!\n");
+                printf("Please choose row of token you'd like to move:\n");
+                scanf("%d",&a);
+            }
+            
+            printf("Please choose column of token you'd like to move:\n");
             scanf("%d",&b);
+            while(b<0 || b>8)
+            {
+                printf("ERROR: Invalid column!\n");
+                printf("Please choose column of token you'd like to move:\n");
+                scanf("%d",&b);
+            }
             
-            board[a+1][b].stack = (token*)malloc(sizeof(token));
-            board[a+1][b].stack->col =players[0].col;
-            
-            board[a][b].stack = (token*)malloc(sizeof(token));
-            board[a][b].stack->col =NONE;
+            if(a!=0 && a!=5)
+            {
+                int upDown;
+                printf("Would you like to move this token up or down?\n");
+                printf("Enter 1 for up OR 0 for down:\n");
+                scanf("%d", &upDown);
+                while(upDown!=0 && upDown!=1)
+                {
+                    printf("ERROR: Invalid choice!\n");
+                    printf("Enter 1 for up OR 0 for down:\n");
+                    scanf("%d",&upDown);
+                }
+                if(upDown==1)
+                {
+                    board[a][b].stack = (token*)malloc(sizeof(token));
+                    board[a][b].stack->col =NONE;
+                    board[a-1][b].stack = (token*)malloc(sizeof(token));
+                    board[a-1][b].stack->col =players[0].col; 
+                }
+                else if(upDown==0)
+                {
+                    board[a][b].stack = (token*)malloc(sizeof(token));
+                    board[a][b].stack->col =NONE;
+                    board[a+1][b].stack = (token*)malloc(sizeof(token));
+                    board[a+1][b].stack->col =players[0].col;                 
+                }
+            }
+            else if(a==0)
+            {
+                board[a][b].stack = (token*)malloc(sizeof(token));
+                board[a][b].stack->col =NONE;
+                board[a+1][b].stack = (token*)malloc(sizeof(token));
+                board[a+1][b].stack->col =players[0].col; 
+            }
+            else if(a==5)
+            {
+                board[a][b].stack = (token*)malloc(sizeof(token));
+                board[a][b].stack->col =NONE;
+                board[a-1][b].stack = (token*)malloc(sizeof(token));
+                board[a-1][b].stack->col =players[0].col; 
+            }
             
             print_board(board);
             
-            
-
         }
         
-        printf("Columb");
+        /*int roll = rollDice();
+        
+        printf("Column");
         scanf("%d",&b);
         board[roll][b+1].stack = (token*)malloc(sizeof(token));
         board[roll][b+1].stack->col =players[0].col;
@@ -175,7 +224,9 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
         board[roll][b].stack = (token*)malloc(sizeof(token));
         board[roll][b].stack->col =NONE;
         
-        print_board(board);
+        print_board(board);*/
+        
+    
         
       
 
