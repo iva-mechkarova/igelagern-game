@@ -7,6 +7,8 @@
 
 #include "game_init.h"
 #include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 
 void printLine();
 
@@ -88,8 +90,25 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
  *        numPlayers - the number of players  
  */
 
-void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPlayers){
-    //TO BE IMPLEMENTED
+void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPlayers){ 
+    int gameLoop=0;
+    //while(gameLoop==0){
+        
+        //TO BE IMPLEMENTED
+        int roll = rollDice();
+        
+    //}
+ 
+    
+}
+
+int rollDice()
+{
+    srand(time(NULL));
+    int roll = 1+rand() % 6;
+    printf("You rolled a %d/n",roll);
+    return roll;
+    
 }
 
 
