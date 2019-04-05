@@ -6,6 +6,7 @@
 
 
 #include "game_init.h"
+#include "game_logic.h"
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -133,10 +134,55 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
 
 void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPlayers){ 
     int gameLoop=0;
+    int a,b;
     //while(gameLoop==0){
+    
+    
+    
         
         //TO BE IMPLEMENTED
         int roll = rollDice();
+        
+        
+        
+        printf("");
+        int choice;
+        scanf("%d",&choice);
+        if(choice==1)
+        {
+            printf("Please choose Row");
+            scanf("%d",&a);
+            printf("Columb");
+            scanf("%d",&b);
+            
+            board[a+1][b].stack = (token*)malloc(sizeof(token));
+            board[a+1][b].stack->col =players[0].col;
+            
+            board[a][b].stack = (token*)malloc(sizeof(token));
+            board[a][b].stack->col =NONE;
+            
+            print_board(board);
+            
+            
+
+        }
+        
+        printf("Columb");
+        scanf("%d",&b);
+        board[roll][b+1].stack = (token*)malloc(sizeof(token));
+        board[roll][b+1].stack->col =players[0].col;
+        
+        board[roll][b].stack = (token*)malloc(sizeof(token));
+        board[roll][b].stack->col =NONE;
+        
+        print_board(board);
+        
+      
+
+    
+
+        
+        
         
     //}
  
@@ -146,7 +192,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
 int rollDice()
 {
     srand(time(NULL));
-    int roll = 1+rand() % 6;
+    int roll = rand() % 6;
     printf("You rolled a %d/n",roll);
     return roll;
     
