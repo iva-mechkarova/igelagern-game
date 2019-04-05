@@ -16,7 +16,7 @@ enum stype{
 
 //colors of tokens
 enum color {
-    RED, BLU, GREEN, YELLOW, PINK, ORANGE
+    RED, BLU, GREEN, YELLOW, PINK, ORANGE, NONE
 };
 
 //defines a token. 
@@ -34,6 +34,7 @@ typedef struct square{
      token * stack;      
      
      int numTokens;
+     
 }square;
 
 
