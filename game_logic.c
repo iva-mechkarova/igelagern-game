@@ -167,7 +167,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
 
         }
         
-        printf("Columb");
+        printf("Column");
         scanf("%d",&b);
         board[roll][b+1].stack = (token*)malloc(sizeof(token));
         board[roll][b+1].stack->col =players[0].col;
