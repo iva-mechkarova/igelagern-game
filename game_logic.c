@@ -171,30 +171,44 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 scanf("%d",&b);
             }
             
-            if(a!=0 && a!=5)
-            {              
-                printf("Would you like to move this token up or down?\n");
-                printf("Enter 1 for up OR 0 for down:\n");
-                scanf("%d", &upDown);
-                while(upDown!=0 && upDown!=1)
-                {
-                    printf("ERROR: Invalid choice!\n");
+            while(board[a][b].stack->col!=players[0].col)
+            {
+                printf("ERROR: Your token is not on this square\n");
+                printf("Please choose row of token you'd like to move:\n");
+                scanf("%d", &a);
+                printf("Please choose column of token you'd like to move:\n");
+                scanf("%d", &b);
+            }
+
+            if(board[a][b].stack->col==players[0].col)
+            {           
+                if(a!=0 && a!=5)
+                {              
+                    printf("Would you like to move this token up or down?\n");
                     printf("Enter 1 for up OR 0 for down:\n");
-                    scanf("%d",&upDown);
+                    scanf("%d", &upDown);
+                    while(upDown!=0 && upDown!=1)
+                    {
+                        printf("ERROR: Invalid choice!\n");
+                        printf("Enter 1 for up OR 0 for down:\n");
+                        scanf("%d",&upDown);
+                    }
                 }
+
+                if(upDown==1 || a==5)
+                {
+                    playerMovement(board,players[0],a,b,-1);
+                }
+                else if(upDown==0 || a==0)
+                {
+                    playerMovement(board,players[0],a,b,1);
+                }
+
+                print_board(board);     
             }
-         
-            if(upDown==1 || a==5)
-            {
-                playerMovement(board,players[0],a,b,-1);
-            }
-            else if(upDown==0 || a==0)
-            {
-                playerMovement(board,players[0],a,b,1);
-            }
-                     
-            print_board(board);          
+                
         }
+    
         
 
         /*int roll = rollDice();
