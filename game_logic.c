@@ -146,28 +146,25 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
         
         while(choice!=0 && choice!=1)
         {
-            printf("ERROR: Invalid choice!\n");
-            printf("Enter 1 for yes OR 0 for no:\n");
+            printf("Invalid choice! Try again:");
             scanf("%d",&choice);
         }
         
         if(choice==1)
         {
-            printf("Please choose row of token you'd like to move:\n");
+            printf("Please choose row of token you'd like to move:");
             scanf("%d",&a);
             while(a<0 || a>5)
             {
-                printf("ERROR: Invalid row!\n");
-                printf("Please choose row of token you'd like to move:\n");
+                printf("Invalid choice! Try again:");
                 scanf("%d",&a);
             }
             
-            printf("Please choose column of token you'd like to move:\n");
+            printf("Please choose column of token you'd like to move:");
             scanf("%d",&b);
             while(b<0 || b>8)
             {
-                printf("ERROR: Invalid column!\n");
-                printf("Please choose column of token you'd like to move:\n");
+                printf("Invalid choice! Try again:");
                 scanf("%d",&b);
             }
             
@@ -189,17 +186,15 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                     scanf("%d", &upDown);
                     while(upDown!=0 && upDown!=1)
                     {
-                        printf("ERROR: Invalid choice!\n");
-                        printf("Enter 1 for up OR 0 for down:\n");
+                        printf("Invalid choice! Try again:");
                         scanf("%d",&upDown);
                     }
                 }
-
                 if(upDown==1 || a==5)
                 {
                     playerMovement(board,players[0],a,b,-1);
                 }
-                else if(upDown==0 || a==0)
+                if(upDown==0 || a==0)
                 {
                     playerMovement(board,players[0],a,b,1);
                 }
