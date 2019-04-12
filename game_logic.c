@@ -252,5 +252,13 @@ void playerMovement(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer,in
     board[row+upDown][column].stack->col =currentPlayer.col; 
 }
 
+struct square * push(player colour, struct square *top){
+    struct square *curr = top;
+    top = malloc(sizeof(square));
+    top->stack->col = colour.col;
+    top->stack = curr;
+    return top;
+}
+
 
 
