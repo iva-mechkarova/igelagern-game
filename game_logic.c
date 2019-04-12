@@ -84,8 +84,8 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
     int i=0;
     while(i<6){ 
     board[i][0].numTokens =0;
-    board[i][0].stack = (token*)malloc(sizeof(token));
-    board[i][0].stack->col = NONE;
+    //board[i][0].stack = (token*)malloc(sizeof(token));
+    //board[i][0].stack->col = NONE;
     i++;
     }
     
@@ -95,6 +95,7 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
         {
             printf("Player %d please select a square\n", j);
             scanf("%d", &selectedSquare);
+            
             
             
             if(board[selectedSquare][0].numTokens==minNumOfTokens && board[selectedSquare][0].stack->col!=players[j].col)
@@ -152,7 +153,41 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
         
         if(choice==1)
         {
-            printf("Please choose row of token you'd like to move:");
+            printf("Please Enter\n");
+            int loopA =1;
+            while (loopA==1)
+            {
+                printf("Row:");
+                scanf("%d",&a);
+                if(a>=0&&a<=5)
+                {
+                    int loopB=1;
+                    while (loopB==1)
+                    {
+                        printf("Column:"); 
+                        scanf("%d",&b);
+                        if(b>=0&&b<=8)
+                        {
+                            loopB=0;
+                            printf("no toekns %d ",board[a][b].numTokens);
+                            if(board[a][b].numTokens>0 && board[a][b].stack->col==players[0].col)
+                            {
+                                loopA=0;
+                            }
+                            else
+                                printf("Token");
+                        }
+                        else
+                            printf("Invalid Column, Try again! "); 
+                    }
+                }
+                else
+                    printf("Invalid Row, Try again! \n"); 
+                    
+                
+                
+            }
+            /*printf("Please choose row of token you'd like to move:");
             scanf("%d",&a);
             while(a<0 || a>5)
             {
@@ -175,7 +210,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 scanf("%d", &a);
                 printf("Please choose column of token you'd like to move:\n");
                 scanf("%d", &b);
-            }
+            }*/
 
             if(board[a][b].stack->col==players[0].col)
             {           
