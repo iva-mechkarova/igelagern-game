@@ -45,8 +45,9 @@ int initialize_players(player players[]){
     //YOU WILL NEED TO IMPLEMENT THIS FUNCTION IN THIS LAB
     int i=0;
     while(i<6){
-        printf("Player For Position %d :",i);
-        fgets(players[i].playername,10,stdin);
+        printf("Name for player %d :",i+1);
+        fgets(players[i].playername,32,stdin);
+        strtok(players[i].playername, "\n");
         if(players[i].playername[0] == '\n')
             break;
         i++;
@@ -62,7 +63,7 @@ int initialize_colour(player players[],int numPlayers){
     
     while(i<numPlayers)
     {
-        printf("Select colour for %s",players[i].playername);
+        printf("%s Select a colour:",players[i].playername);
         scanf("%d",&option);
         
         switch(option){

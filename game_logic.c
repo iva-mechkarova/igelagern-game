@@ -12,6 +12,7 @@
 #include <stdlib.h>
 
 void printLine();
+void printDivider();
 
 /*
  * Returns the first letter associated with the color of the token
@@ -69,6 +70,9 @@ void print_board(square board[NUM_ROWS][NUM_COLUMNS]){
 void printLine(){
   printf("   -------------------------------------\n");  
 }
+void printDivider(){
+    printf("---------------------------------------------------\n");
+}
 
 /*
  * Place tokens in the first column of the board
@@ -84,8 +88,8 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
     int i=0;
     while(i<6){ 
     board[i][0].numTokens =0;
-    //board[i][0].stack = (token*)malloc(sizeof(token));
-    //board[i][0].stack->col = NONE;
+    board[i][0].stack = (token*)malloc(sizeof(token));
+    board[i][0].stack->col = NONE;
     i++;
     }
     
@@ -93,11 +97,9 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
     {
         for(int j=0; j<numPlayers; j++)
         {
-            printf("Player %d please select a square\n", j);
+            printf("%s Place token on row[0-5]:", players[j].playername);
             scanf("%d", &selectedSquare);
-            
-            
-            
+
             if(board[selectedSquare][0].numTokens==minNumOfTokens && board[selectedSquare][0].stack->col!=players[j].col)
             {
                 board[selectedSquare][0].stack = (token*)malloc(sizeof(token));
@@ -140,10 +142,11 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
     int a,b,choice,upDown;
     //for(int i=0; i<numPlayers; i++){
 
-        //TO BE IMPLEMENTED
-        printf("Would you like to move a token up/down?\n");
-        printf("Enter 1 for yes OR 0 for no:\n");
-        scanf("%d",&choice);
+        //TO BE IMPLEMENTED#
+    
+        printDivider();
+        printf("Move a token up/down? [1]Yes [0]No:");
+        scanf("%d",&choice);printDivider();
         
         while(choice!=0 && choice!=1)
         {
@@ -153,64 +156,36 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
         
         if(choice==1)
         {
-            printf("Please Enter\n");
             int loopA =1;
             while (loopA==1)
             {
-                printf("Row:");
+                printf("Row [0-5]:");
                 scanf("%d",&a);
                 if(a>=0&&a<=5)
                 {
                     int loopB=1;
                     while (loopB==1)
                     {
-                        printf("Column:"); 
+                        printf("Column [0-8]:"); 
                         scanf("%d",&b);
                         if(b>=0&&b<=8)
                         {
                             loopB=0;
-                            printf("no toekns %d ",board[a][b].numTokens);
                             if(board[a][b].numTokens>0 && board[a][b].stack->col==players[0].col)
                             {
                                 loopA=0;
                             }
-                            else
-                                printf("Token");
+                            else{printDivider();printf("You don't have a token here, Try again!\n");printDivider();}
+                               
                         }
-                        else
-                            printf("Invalid Column, Try again! "); 
+                        else{printDivider();printf("Invalid Column, Try again!\n");printDivider();}
                     }
                 }
-                else
-                    printf("Invalid Row, Try again! \n"); 
+                else{printDivider();printf("Invalid Row, Try again!\n");printDivider();}
                     
                 
                 
             }
-            /*printf("Please choose row of token you'd like to move:");
-            scanf("%d",&a);
-            while(a<0 || a>5)
-            {
-                printf("Invalid choice! Try again:");
-                scanf("%d",&a);
-            }
-            
-            printf("Please choose column of token you'd like to move:");
-            scanf("%d",&b);
-            while(b<0 || b>8)
-            {
-                printf("Invalid choice! Try again:");
-                scanf("%d",&b);
-            }
-            
-            while(board[a][b].stack->col!=players[0].col)
-            {
-                printf("ERROR: Your token is not on this square\n");
-                printf("Please choose row of token you'd like to move:\n");
-                scanf("%d", &a);
-                printf("Please choose column of token you'd like to move:\n");
-                scanf("%d", &b);
-            }*/
 
             if(board[a][b].stack->col==players[0].col)
             {           
@@ -286,6 +261,3 @@ void playerMovement(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer,in
     board[row+upDown][column].stack = (token*)malloc(sizeof(token));
     board[row+upDown][column].stack->col =currentPlayer.col; 
 }
-
-
-
