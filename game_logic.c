@@ -261,3 +261,17 @@ void playerMovement(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer,in
     board[row+upDown][column].stack = (token*)malloc(sizeof(token));
     board[row+upDown][column].stack->col =currentPlayer.col; 
 }
+<<<<<<< HEAD
+=======
+
+struct square * push(player colour, struct square *top){
+    struct square *curr = top;
+    top = malloc(sizeof(square));
+    top->stack->col = colour.col;
+    top->stack = curr;
+    return top;
+}
+
+
+
+>>>>>>> d941a903d3c30fab92072634ace65d6d96d5bee6
