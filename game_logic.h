@@ -31,4 +31,8 @@ void playerMovement(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer,in
 
 int rollDice();
 
+struct token * push(player value, struct token *top);
+
+struct token * pop(struct token *top);
+
 

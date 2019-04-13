@@ -10,6 +10,8 @@
 #define NUM_COLUMNS 9
 
 
+
+
 //types of squares
 enum stype{
     NORMAL, OBSTACLE };
@@ -22,7 +24,8 @@ enum color {
 //defines a token. 
 //Note each token can be associated with a color
 typedef struct token{
-   enum color col; 
+   enum color col;
+   struct token *next;
     
 }token;
 
@@ -69,6 +72,7 @@ void initialize_board(square board[NUM_ROWS][NUM_COLUMNS]);
  */
 int initialize_players(player players[]);
 int initialize_colour(player players[],int numPlayers);
+
 
 
 

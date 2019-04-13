@@ -14,6 +14,9 @@
 void printLine();
 void printDivider();
 
+struct token *top = NULL;
+struct token *curr = NULL;
+
 /*
  * Returns the first letter associated with the color of the token
  * 
@@ -261,3 +264,21 @@ void playerMovement(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer,in
     board[row+upDown][column].stack = (token*)malloc(sizeof(token));
     board[row+upDown][column].stack->col =currentPlayer.col; 
 }
+
+struct token * push(player value, struct token *top){
+    struct token *curr = top;
+    top = malloc(sizeof(token));
+    top->col = value.col;
+    top->next = curr;
+    return top;
+}
+
+struct token * pop(struct token *top){
+    struct token *curr = top;
+    if(curr!=NULL){
+        top = curr->next;
+        free(curr);
+    }
+    return top;
+}
+
