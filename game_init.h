@@ -23,7 +23,6 @@ enum color {
 //Note each token can be associated with a color
 typedef struct token{
    enum color col; 
-   token * next;
     
 }token;
 
