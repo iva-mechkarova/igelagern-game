@@ -49,6 +49,7 @@ typedef struct square{
  */
 typedef struct player{
     char playername[20];
+    char *playerColour;
     enum color col;
     int numTokensLastCol;
     

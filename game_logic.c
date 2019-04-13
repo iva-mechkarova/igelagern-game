@@ -23,9 +23,10 @@ struct token *curr = NULL;
  * Input: t - pointer to a token
  * Output: initial of the color of the token
  */
+//printf("\033[1;31m[1]RED \033[1;34m[2]BLUE \033[1;32m[3]GREEN \033[1;33m[4]YELLOW \033[1;35m[5]PINK \033[1;36m[6]CYAN\033[0m\n");
 char print_token(token *t){
     if((*t).col== PINK) return 'P';
-    if((*t).col== RED) return 'R';
+    if((*t).col== RED) return "\033[1;31mR";
     if((*t).col== BLU) return 'B';
     if((*t).col== GREEN) return 'G';
     if((*t).col== ORANGE) return 'O';
@@ -98,34 +99,23 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
     {
         for(int j=0; j<numPlayers; j++)
         {
-            printf("%s Place token on row[0-5]:", players[j].playername);
-            scanf("%d", &selectedSquare);
-
-            if (minNumOfTokens==0)
-            {
-                while(board[selectedSquare][0].numTokens!=minNumOfTokens)
+            int loop=1;
+            while(loop==1){
+                printf("%s (%s) Place token on row[0-5]:", players[j].playername,players[j].playerColour);
+                scanf("%d", &selectedSquare);
+                if(selectedSquare>=0&&selectedSquare<=5)
                 {
-                    printf("ERROR: This square does not contain minimum number of tokens (%d tokens)\n", minNumOfTokens);
-                    printf("%s Place token on different row[0-5]:", players[j].playername);
-                    scanf("%d", &selectedSquare);
+                    if ((board[selectedSquare][0].numTokens==minNumOfTokens && minNumOfTokens==0 ) || (board[selectedSquare][0].numTokens==minNumOfTokens && board[selectedSquare][0].stack->col!=players[j].col))
+                    {
+                        board[selectedSquare][0].stack = (token*)malloc(sizeof(token));
+                        board[selectedSquare][0].stack->col = players[j].col;
+                        board[selectedSquare][0].numTokens++;
+                        loop=0; 
+                    }
+                    else{printDivider();printf("ERROR: This square does not contain minimum number of tokens (%d tokens) OR your token is on top\n", minNumOfTokens);printDivider();}
                 }
-                board[selectedSquare][0].stack = (token*)malloc(sizeof(token));
-                board[selectedSquare][0].stack->col = players[j].col;
-                board[selectedSquare][0].numTokens++;
+                else{printDivider();printf("Invalid Row, Try again!\n");printDivider();}    
             }
-            else if(minNumOfTokens>0)
-            {
-                while(board[selectedSquare][0].numTokens!=minNumOfTokens || board[selectedSquare][0].stack->col==players[j].col)
-                {
-                    printf("ERROR: This square does not contain minimum number of tokens (%d tokens) OR your token is on top\n", minNumOfTokens);
-                    printf("%s Place token on different row[0-5]:", players[j].playername);
-                    scanf("%d", &selectedSquare);
-                }
-                board[selectedSquare][0].stack = (token*)malloc(sizeof(token));
-                board[selectedSquare][0].stack->col = players[j].col;
-                board[selectedSquare][0].numTokens++;                                
-            }       
-            
             if (((numPlayers*i)+j+1)%NUM_ROWS==0)
                 minNumOfTokens++;
             
@@ -161,7 +151,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
         
         if(choice==1)
         {
-            int loopA =1;
+            int loopA=1;
             while (loopA==1)
             {
                 printf("Row [0-5]:");

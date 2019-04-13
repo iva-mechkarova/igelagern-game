@@ -58,7 +58,7 @@ int initialize_players(player players[]){
 int initialize_colour(player players[],int numPlayers){   
     int i=0,option,loop;
     printf("----------------------Colours----------------------\n");
-    printf("[1]RED [2]BLUE [3]GREEN [4]YELLOW [5]PINK [6]ORANGE\n");
+    printf("\033[1;31m[1]RED \033[1;34m[2]BLUE \033[1;32m[3]GREEN \033[1;33m[4]YELLOW \033[1;35m[5]PINK \033[1;36m[6]CYAN\033[0m\n");
     printf("---------------------------------------------------\n");
     
     while(i<numPlayers)
@@ -67,17 +67,17 @@ int initialize_colour(player players[],int numPlayers){
         scanf("%d",&option);
         
         switch(option){
-            case 1: players[i].col=RED;
+            case 1: players[i].col=RED;players[i].playerColour="RED";
                     break;
-            case 2: players[i].col=BLU;
+            case 2: players[i].col=BLU;players[i].playerColour="BLU";
                     break;
-            case 3: players[i].col=GREEN;
+            case 3: players[i].col=GREEN;players[i].playerColour="GREEN";
                     break;
-            case 4: players[i].col=YELLOW;
+            case 4: players[i].col=YELLOW;players[i].playerColour="YELLOW";
                     break;
-            case 5: players[i].col=PINK;
+            case 5: players[i].col=PINK;players[i].playerColour="PINK";
                     break;
-            case 6: players[i].col=ORANGE;
+            case 6: players[i].col=ORANGE;players[i].playerColour="ORANGE";
             default: break;
         }
         
