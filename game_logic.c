@@ -139,11 +139,11 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
  */
 
 void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPlayers){ 
-    int a,b,choice,upDown;
-    //for(int i=0; i<numPlayers; i++){
+    int a,b,choice,upDown, winner=0;
+    for(int i=0; i<10; i++){
 
         //TO BE IMPLEMENTED#
-        printf("Move a token up/down? [1]Yes [0]No:");
+        printf("%s move a token up/down? [1]Yes [0]No:", players[i].playername);
         scanf("%d",&choice);
         
         while(choice!=0 && choice!=1)
@@ -169,7 +169,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                         if(b>=0&&b<=8)
                         {
                             loopB=0;
-                            if(board[a][b].numTokens>0 && board[a][b].stack->col==players[0].col)
+                            if(board[a][b].numTokens>0 && board[a][b].stack->col==players[i].col)
                             {
                                 loopA=0;
                             }
@@ -185,11 +185,11 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 
             }
 
-            if(board[a][b].stack->col==players[0].col)
+            if(board[a][b].stack->col==players[i].col)
             {
                 if(a!=0 && a!=5)
                 {              
-                    printf("Move token up or down? [1]Up [0]Down:");
+                    printf("%s move token up or down? [1]Up [0]Down:", players[i].playername);
                     scanf("%d", &upDown);
                     while(upDown!=0 && upDown!=1)
                     {
@@ -199,54 +199,58 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 }
                 if(upDown==1 || a==5)
                 {
-                    playerMovement(board,players[0],a,b,-1);
+                    playerMovement(board,players[i],a,b,-1);
                 }
                 if(upDown==0 || a==0)
                 {
-                    playerMovement(board,players[0],a,b,1);
+                    playerMovement(board,players[i],a,b,1);
                 }
 
                 print_board(board);     
             }
                 
         }
-    
         
-
-        /*int roll = rollDice();
+        int roll = rollDice();
         
-        printf("Column");
+        printf("%s you rolled a %d\n",players[i].playername, roll);
+        
+        printf("%s select a column[0-8]:", players[i].playername);
         scanf("%d",&b);
-        board[roll][b+1].stack = (token*)malloc(sizeof(token));
-        board[roll][b+1].stack->col =players[i].col;
         
-        board[roll][b].stack = (token*)malloc(sizeof(token));
-        board[roll][b].stack->col =NONE;
-        
-        print_board(board);*/
-        
-    
-        
-      
-        /*if(i==(numPlayers-1))
+        while(board[roll][b].numTokens==0)
         {
-            i=0;
+            printf("ERROR: There is no token on this square\n");
+            printf("%s Please select a different column[0-8]:", players[i].playername);
+            scanf("%d", &b);
         }
+        
+        if(board[roll][b].numTokens>0)
+        {
+            moveForward(board,players[i],b,roll);
+        }
+        
+        print_board(board);
         
         if(players[i].numTokensLastCol==3)
         {
-            break;
-        }   */
-    //}
+            printf("WINNER: %s\n", players[i].playername);
+            exit(1);
+        }
+        else if(i==numPlayers)
+        {
+            i=0;
+        }
+    }
  
     
-}
+}gi
 
 int rollDice()
 {
     srand(time(NULL));
     int roll = rand() % 6;
-    printf("You rolled a %d\n",roll);
+    //printf("You rolled a %d\n",roll);
     return roll;
     
 }
@@ -262,6 +266,21 @@ void playerMovement(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer,in
     board[row+upDown][column].stack = (token*)malloc(sizeof(token));
     top[row+upDown][column]=push(currentPlayer,top[row+upDown][column]);
     board[row+upDown][column].stack->col =currentPlayer.col; 
+}
+
+
+void moveForward(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer, int column, int roll)
+{
+    board[roll][column].stack = (token*)malloc(sizeof(token));
+    top[roll][column]=pop(top[roll][column]);
+    if(board[roll][column].numTokens>1){
+        board[roll][column].stack->col =top[roll][column]->col;
+    }
+    board[roll][column].numTokens--;
+    board[roll][column+1].stack = (token*)malloc(sizeof(token));
+    top[roll][column+1]=push(currentPlayer,top[roll][column+1]);
+    board[roll][column+1].stack->col =currentPlayer.col; 
+    
 }
 
 struct token * push(player value, struct token *top){

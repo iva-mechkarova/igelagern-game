@@ -29,6 +29,8 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
 
 void playerMovement(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer,int row,int column,int upDown);
 
+void moveForward(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer,int column,int roll);
+
 int rollDice();
 
 struct token * push(player value, struct token *top);
