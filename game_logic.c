@@ -12,10 +12,9 @@
 #include <stdlib.h>
 
 void printLine();
-void printDivider();
 
-struct token *top = NULL;
-struct token *curr = NULL;
+struct token *top[NUM_ROWS][NUM_COLUMNS];
+struct token *curr[NUM_ROWS][NUM_COLUMNS];
 
 /*
  * Returns the first letter associated with the color of the token
@@ -43,7 +42,7 @@ char print_token(token *t,char **colC){
  * Input: the board to be printed. 
  */
 void print_board(square board[NUM_ROWS][NUM_COLUMNS]){
-    printf("                THE BOARD\n");
+    printf("\n\n                THE BOARD\n");
     for(int i =0; i < NUM_ROWS; i++){
        
         //prints an horizontal line
@@ -71,14 +70,11 @@ void print_board(square board[NUM_ROWS][NUM_COLUMNS]){
     }
     printLine();
     //prints the number of the columns at the end of the board
-    printf("     0   1   2   3   4   5   6   7   8\n");
+    printf("     0   1   2   3   4   5   6   7   8\n\n\n");
 }
 
 void printLine(){
   printf("   -------------------------------------\n");  
-}
-void printDivider(){
-    printf("---------------------------------------------------\n");
 }
 
 /*
@@ -94,8 +90,14 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
     int selectedSquare = 0;
     int i=0;
     while(i<6){ 
-    board[i][0].numTokens =0;
-    i++;
+        board[i][0].numTokens =0;
+        i++;
+        int j=0;
+        while(j<8){
+            top[i][j]=NULL;
+            curr[i][j]=NULL;
+            j++;
+        }
     }
     
     for (int i=0; i<4; i++)
@@ -111,17 +113,17 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
                     if ((board[selectedSquare][0].numTokens==minNumOfTokens && minNumOfTokens==0 ) || (board[selectedSquare][0].numTokens==minNumOfTokens && board[selectedSquare][0].stack->col!=players[j].col))
                     {
                         board[selectedSquare][0].stack = (token*)malloc(sizeof(token));
-                        board[selectedSquare][0].stack->col = players[j].col;
+                        top[selectedSquare][0]=push(players[j],top[selectedSquare][0]);
+                        board[selectedSquare][0].stack->col = top[selectedSquare][0]->col;
                         board[selectedSquare][0].numTokens++;
                         loop=0; 
                     }
-                    else{printDivider();printf("ERROR: This square does not contain minimum number of tokens (%d tokens) OR your token is on top\n", minNumOfTokens);printDivider();}
+                    else{printf("ERROR: This square does not contain minimum number of tokens (%d tokens) OR your token is on top\n", minNumOfTokens);}
                 }
-                else{printDivider();printf("Invalid Row, Try again!\n");printDivider();}    
+                else{printf("Invalid Row, Try again!\n");}    
             }
             if (((numPlayers*i)+j+1)%NUM_ROWS==0)
                 minNumOfTokens++;
-            
             print_board(board);
         }
     }
@@ -141,10 +143,8 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
     //for(int i=0; i<numPlayers; i++){
 
         //TO BE IMPLEMENTED#
-    
-        printDivider();
         printf("Move a token up/down? [1]Yes [0]No:");
-        scanf("%d",&choice);printDivider();
+        scanf("%d",&choice);
         
         while(choice!=0 && choice!=1)
         {
@@ -173,24 +173,23 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                             {
                                 loopA=0;
                             }
-                            else{printDivider();printf("You don't have a token here, Try again!\n");printDivider();}
+                            else{printf("You don't have a token here, Try again!\n");}
                                
                         }
-                        else{printDivider();printf("Invalid Column, Try again!\n");printDivider();}
+                        else{printf("Invalid Column, Try again!\n");}
                     }
                 }
-                else{printDivider();printf("Invalid Row, Try again!\n");printDivider();}
+                else{printf("Invalid Row, Try again!\n");}
                     
                 
                 
             }
 
             if(board[a][b].stack->col==players[0].col)
-            {           
+            {
                 if(a!=0 && a!=5)
                 {              
-                    printf("Would you like to move this token up or down?\n");
-                    printf("Enter 1 for up OR 0 for down:\n");
+                    printf("Move token up or down? [1]Up [0]Down:");
                     scanf("%d", &upDown);
                     while(upDown!=0 && upDown!=1)
                     {
@@ -255,8 +254,13 @@ int rollDice()
 void playerMovement(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer,int row,int column,int upDown)
 {
     board[row][column].stack = (token*)malloc(sizeof(token));
-    board[row][column].stack->col =NONE;
+    top[row][column]=pop(top[row][column]);
+    if(board[row][column].numTokens>1){
+        board[row][column].stack->col =top[row][column]->col;
+    }
+    board[row][column].numTokens--;
     board[row+upDown][column].stack = (token*)malloc(sizeof(token));
+    top[row+upDown][column]=push(currentPlayer,top[row+upDown][column]);
     board[row+upDown][column].stack->col =currentPlayer.col; 
 }
 

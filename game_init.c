@@ -16,6 +16,8 @@
  * Input: board - a 6x9 array of squares
  *
  */
+
+
 void initialize_board(square board[NUM_ROWS][NUM_COLUMNS]){
    
     for (int i =0; i< NUM_ROWS; i++){
@@ -51,6 +53,7 @@ int initialize_players(player players[]){
         if(players[i].playername[0] == '\n')
             break;
         i++;
+        
     }
     return i;
 }
@@ -58,8 +61,8 @@ int initialize_players(player players[]){
 int initialize_colour(player players[],int numPlayers){   
     int i=0,option,loop;
     printf("----------------------Colours----------------------\n");
-    printf("\033[1;31m[1]RED \033[1;34m[2]BLUE \033[1;32m[3]GREEN \033[1;33m[4]YELLOW \033[1;35m[5]PINK \033[1;36m[6]CYAN\033[0m\n");
-    printf("---------------------------------------------------\n");
+        printf("\033[1;31m[1]RED \033[1;34m[2]BLUE \033[1;32m[3]GREEN \033[1;33m[4]YELLOW \033[1;35m[5]PINK \033[1;36m[6]CYAN\033[0m\n");
+        printf("---------------------------------------------------\n");
     
     while(i<numPlayers)
     {

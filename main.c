@@ -35,19 +35,18 @@ int main(int argc, char** argv) {
     initialize_board(board);
     
     //prints the board
-    print_board(board);
     
     //creates the players
     numPlayers = initialize_players(players);
     
     //initilize colour
     initialize_colour(players,numPlayers);
+    print_board(board);
     
     //asks each player to place their tokens
     //on the first column of the board
     place_tokens(board, players, numPlayers);
     
-    print_board(board);
     
     
     //manages the turns of the game and identifies a winner
