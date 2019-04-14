@@ -23,15 +23,18 @@ struct token *curr = NULL;
  * Input: t - pointer to a token
  * Output: initial of the color of the token
  */
-//printf("\033[1;31m[1]RED \033[1;34m[2]BLUE \033[1;32m[3]GREEN \033[1;33m[4]YELLOW \033[1;35m[5]PINK \033[1;36m[6]CYAN\033[0m\n");
-char print_token(token *t){
-    if((*t).col== PINK) return 'P';
-    if((*t).col== RED) return "\033[1;31mR";
-    if((*t).col== BLU) return 'B';
-    if((*t).col== GREEN) return 'G';
-    if((*t).col== ORANGE) return 'O';
-    if((*t).col== YELLOW) return 'Y';
-    return '\0';
+/*
+ * Prints the board
+ * 
+ * Input: the board to be printed. 
+ */
+char print_token(token *t,char **colC){
+    if((*t).col== PINK) *colC="\033[1;35mP\033[0m";
+    if((*t).col== RED) *colC="\033[1;31mR\033[0m";
+    if((*t).col== BLU) *colC="\033[1;34mB\033[0m";
+    if((*t).col== GREEN) *colC="\033[1;32mG\033[0m";
+    if((*t).col== CYAN) *colC="\033[1;36mC\033[0m";
+    if((*t).col== YELLOW) *colC="\033[1;35mY\033[0m";
 }
 
 /*
@@ -47,22 +50,22 @@ void print_board(square board[NUM_ROWS][NUM_COLUMNS]){
         printLine();
         //prints the row number
         printf(" %d ", i);
-        char c = '\0' ;
+        char *c = "\0" ;
         //if the square (i,j) is occupied,
         //c is assigned the initial of the color of the token that occupies the square
         for (int j = 0; j < NUM_COLUMNS; j++){
             if(board[i][j].stack != NULL){
-                c = print_token(board[i][j].stack);
+                print_token(board[i][j].stack,&c);
             }
             //if the square (i,j) is empty
             else{
                 //c is assigned 'X' if the square represents an obstacle
                 if(board[i][j].type == OBSTACLE)
-                    c = 'X';
+                    c = "X";
                 //c is assigned an empty space otherwise
-                else c = ' ';
+                else c = " ";
             }
-            printf("| %c ", c);
+            printf("| %s ",c);
         }
         printf ("|\n");
     }

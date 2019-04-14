@@ -67,17 +67,17 @@ int initialize_colour(player players[],int numPlayers){
         scanf("%d",&option);
         
         switch(option){
-            case 1: players[i].col=RED;players[i].playerColour="RED";
+            case 1: players[i].col=RED;players[i].playerColour="\033[1;31mRED\033[0m";
                     break;
-            case 2: players[i].col=BLU;players[i].playerColour="BLU";
+            case 2: players[i].col=BLU;players[i].playerColour="\033[1;34mBLU\033[0m";
                     break;
-            case 3: players[i].col=GREEN;players[i].playerColour="GREEN";
+            case 3: players[i].col=GREEN;players[i].playerColour="\033[1;32mGREEN\033[0m";
                     break;
-            case 4: players[i].col=YELLOW;players[i].playerColour="YELLOW";
+            case 4: players[i].col=YELLOW;players[i].playerColour="\033[1;33mYELLOW\033[0m";
                     break;
-            case 5: players[i].col=PINK;players[i].playerColour="PINK";
+            case 5: players[i].col=PINK;players[i].playerColour="\033[1;35mPINK\033[0m";
                     break;
-            case 6: players[i].col=ORANGE;players[i].playerColour="ORANGE";
+            case 6: players[i].col=CYAN;players[i].playerColour="\033[1;36mCyan\033[0m";
             default: break;
         }
         
