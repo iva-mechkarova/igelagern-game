@@ -223,25 +223,38 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
         int roll = rollDice();
         printf("%s you rolled a %d\n",players[i].playername, roll);
 /*****************************************************/
-        int loopD = 1;    
-        while(loopD==1)
+        if (canMove(board,roll)==1)
         {
-            printf("%s select a column[0-8]:", players[i].playername);
-            scanf("%d",&column);
-            if(column>=0 && column<=8)
+            int loopD = 1;    
+            while(loopD==1)
             {
-                if(board[roll][column].numTokens>0)
+                printf("%s select a column[0-7]:", players[i].playername);
+                scanf("%d",&column);
+                if(column>=0 && column<8)
                 {
-                    playerMovement(board,roll,column,0,1);
-                    loopD=0;
+                    if(board[roll][column].numTokens>0)
+                    {
+                        playerMovement(board,roll,column,0,1);
+                        loopD=0;
+                    }
+                    else
+                        printf("ERROR: No token on this square, Try again!\n");
+                }
+                else if(column==8)
+                {
+                    printf("ERROR: You cannot move a token in the last column, Try again!\n");
                 }
                 else
-                    printf("ERROR: No token on this square, Try again!\n");
+                {
+                    printf("ERROR: Invalid column, Try again!\n");   
+                }                   
             }
-            else
-                printf("ERROR: Invalid column, Try again!\n");
+            print_board(board); 
         }
-        print_board(board); 
+        else if (canMove(board,roll)==0)
+        {
+            printf("Unlucky %s! No token on row %d for you to move\n", players[i].playername, roll);
+        }
 /*****************************************************/        
         if(players[i].numTokensLastCol==1)
         {
@@ -300,4 +313,16 @@ struct token * pop(struct token *top){
     }
     return top;
 }
+
+int canMove(square board[NUM_ROWS][NUM_COLUMNS], int row){
+    
+    for(int i=0;i<8;i++)
+    {
+        if(board[row][i].numTokens>0)
+        {
+            return 1;
+        }
+    }
+    return 0;   
+} 
 

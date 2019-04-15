@@ -37,4 +37,6 @@ struct token * push(player value, struct token *top);
 
 struct token * pop(struct token *top);
 
+int canMove(square board[NUM_ROWS][NUM_COLUMNS], int row);
+
 
