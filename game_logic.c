@@ -105,7 +105,7 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
         i++;
     }
     
-    for (int i=0; i<6; i++)
+    for (int i=0; i<4; i++)
     {
         for(int j=0; j<numPlayers; j++)
         {
@@ -144,9 +144,10 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
  */
 
 void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPlayers){ 
-    int row,column,choice, winner=0;
-    for(int i=0; i<10; i++){
-        i=0;
+    int row,column,choice=3, winner=0;
+    int loop=1;
+    while(loop==1){
+        int i=0;
 
         //TO BE IMPLEMENTED#
         printf("%s move a token up/down? [1]Yes [0]No:", players[i].playername);
@@ -186,67 +187,82 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                     }
                 }
                 else{printf("Invalid Row, Try again!\n");} 
-            }     
-        }
-        int upDown=3;
-        if(row>0 && row<5)
-        {
-            printf("%s move token up or down? [1]Up [0]Down:", players[i].playername);
-            scanf("%d", &upDown);
-            while(upDown!=0 && upDown!=1)
-            {
-                printf("Invalid choice! Try again:");
-                scanf("%d",&upDown);
             }
+            int upDown=3;
+            if(row>0 && row<5)
+            {
+                int loopC=1;
+                while(loopC==1)
+                {
+                    printf("%s move token up or down? [1]Up [0]Down:", players[i].playername);
+                    scanf("%d", &upDown);
+                    if (upDown==0 || upDown==1)
+                    {
+                        loopC=0;
+                    }
+                    else 
+                    {
+                        printf("Invalid choice, Try again!\n");
+                    }
+                    
+                }
+            }
+            if(upDown==1 || row==5)
+                playerMovement(board,row,column,-1,0);
+            if(upDown==0 || row==0)
+                playerMovement(board,row,column,1,0);
+            print_board(board); 
         }
-        if(upDown==1 || row==5)
-            playerMovement(board,row,column,-1,0);
-        if(upDown==0 || row==0)
-            playerMovement(board,row,column,1,0);
-        print_board(board); 
-        
         
         
         int roll = rollDice();
         
         printf("%s you rolled a %d\n",players[i].playername, roll);
         
-        printf("%s select a column[0-8]:", players[i].playername);
-        scanf("%d",&column);
+        int loopD = 1;
         
-        while(board[roll][column].numTokens==0)
+        while(loopD==1)
         {
-            printf("ERROR: There is no token on this square\n");
-            printf("%s Please select a different column[0-8]:", players[i].playername);
-            scanf("%d", &column);
+            printf("%s select a column[0-8]:", players[i].playername);
+            scanf("%d",&column);
+            if(column>=0 && column<=8)
+            {
+                if(board[roll][column].numTokens>0)
+                {
+                    moveForward(board, players[i],column,roll);
+                    print_board(board);
+                    loopD=0;
+                }
+                else 
+                {
+                    printf("ERROR: No token on this square, Try again!\n");
+                }  
+            }
+            else
+            {
+                printf("ERROR: Invalid column, Try again!\n");
+            }
         }
-        
-        if(board[roll][column].numTokens>0)
-        {
-            moveForward(board,players[i],column,roll);
-        }
-        
-        print_board(board);
         
         if(players[i].numTokensLastCol==3)
         {
             printf("WINNER: %s\n", players[i].playername);
-            exit(1);
+            loop=0;
         }
-        else if(i==numPlayers)
+        
+        /*i++;
+        
+        if(i==numPlayers && loop==1)
         {
             i=0;
-        }
-    }
- 
-    
+        }*/
+    }  
 }
 
 int rollDice()
 {
     srand(time(NULL));
     int roll = rand() % 6;
-    //printf("You rolled a %d\n",roll);
     return roll;
     
 }
