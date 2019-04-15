@@ -27,7 +27,7 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
  */
 void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPlayers);
 
-void playerMovement(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer,int row,int column,int upDown);
+void playerMovement(square board[NUM_ROWS][NUM_COLUMNS],int row,int column,int upDown,int forward);
 
 void moveForward(square board[NUM_ROWS][NUM_COLUMNS], player currentPlayer,int column,int roll);
 
