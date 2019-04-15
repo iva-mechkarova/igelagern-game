@@ -74,7 +74,7 @@ void initialize_board(square board[NUM_ROWS][NUM_COLUMNS]);
  *
  */
 int initialize_players(player players[]);
-int initialize_colour(player players[],int numPlayers);
+void initialize_colour(player players[],int numPlayers);
 
 
 
