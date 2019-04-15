@@ -159,7 +159,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
         int i=0;
 
         //TO BE IMPLEMENTED#
-        printf("%s move a token up/down? [1]Yes [0]No:", players[i].playername);
+        printf("%s (%s) move a token up/down? [1]Yes [0]No:", players[i].playername,players[i].playerColour);
         scanf("%d",&choice);
         
         while(choice!=0 && choice!=1)
@@ -187,7 +187,16 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                             loopB=0;
                             if(board[row][column].numTokens>0 && board[row][column].stack->col==players[i].col)
                             {
-                                loopA=0;
+                                if(board[row][column].type==OBSTACLE)
+                                {
+                                    if (checkBoard(board,column)==2)
+                                        loopA=0;
+                                    else
+                                        printf("Stuck in Obstacle, Try again!\n");
+                                }
+                                else
+                                    loopA=0;
+                                
                             }
                             else{printf("You don't have a token here, Try again!\n");}
                                
@@ -204,7 +213,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 int loopC=1;
                 while(loopC==1)
                 {
-                    printf("%s move token up or down? [1]Up [0]Down:", players[i].playername);
+                    printf("%s (%s)move token up or down? [1]Up [0]Down:", players[i].playername,players[i].playerColour);
                     scanf("%d", &upDown);
                     if (upDown==0 || upDown==1)
                         loopC=0;
@@ -221,39 +230,54 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
         print_board(board);     
 /*****************************************************/        
         int roll = rollDice();
-        printf("%s you rolled a %d\n",players[i].playername, roll);
+        printf("%s (%s) you rolled a %d\n",players[i].playername,players[i].playerColour, roll);
 /*****************************************************/
-        if (canMove(board,roll)==1)
+        int checkType=moveAndObsCheck(board,roll); /*check possible move 1- normal has been checked 2- obstacle has been checked and normal can be moved*/
+        
+        if (checkType==1 || checkType==2)
         {
             int loopD = 1;    
             while(loopD==1)
             {
-                printf("%s select a column[0-7]:", players[i].playername);
+                printf("%s (%s) select a column[0-7]:", players[i].playername,players[i].playerColour);
                 scanf("%d",&column);
                 if(column>=0 && column<8)
                 {
                     if(board[roll][column].numTokens>0)
                     {
-                        playerMovement(board,roll,column,0,1);
-                        loopD=0;
+                        if(board[roll][column].type==OBSTACLE && checkType==1){/*Checks if token is on a obstacle square and hasn't been checked if it can move*/
+                            
+                            if(checkBoard(board,column)==1)
+                            {
+                                playerMovement(board,roll,column,0,1);
+                                loopD=0;
+                            }
+                            else
+                                printf("Stuck in Obstacle, Try again!\n");
+                        }
+                        else
+                        {
+                            playerMovement(board,roll,column,0,1);
+                            loopD=0; 
+                        }
                     }
                     else
-                        printf("ERROR: No token on this square, Try again!\n");
+                        printf("No token on this square, Try again!\n");
                 }
                 else if(column==8)
                 {
-                    printf("ERROR: You cannot move a token in the last column, Try again!\n");
+                    printf("You cannot move a token in the last column, Try again!\n");
                 }
                 else
                 {
-                    printf("ERROR: Invalid column, Try again!\n");   
+                    printf("Invalid column, Try again!\n");   
                 }                   
             }
             print_board(board); 
         }
-        else if (canMove(board,roll)==0)
+        else
         {
-            printf("Unlucky %s! No token on row %d for you to move\n", players[i].playername, roll);
+            printf("No token on row %d to move\n",roll);
         }
 /*****************************************************/        
         if(players[i].numTokensLastCol==1)
@@ -314,15 +338,39 @@ struct token * pop(struct token *top){
     return top;
 }
 
-int canMove(square board[NUM_ROWS][NUM_COLUMNS], int row){
+int moveAndObsCheck(square board[NUM_ROWS][NUM_COLUMNS], int row){
+    int obsPosition; /*holds the obstacle column*/
+    int obsTrue=0;
+    int canMove=0;
     
     for(int i=0;i<8;i++)
     {
-        if(board[row][i].numTokens>0)
+        if(board[row][i].numTokens>0 && board[row][i].type==NORMAL)
         {
-            return 1;
+            canMove=1;
+            break;  
+        }
+        else if(board[row][i].numTokens>0 && board[row][i].type==OBSTACLE){
+            obsPosition=i;
+            obsTrue=1;
+            break;
         }
     }
-    return 0;   
-} 
+    if (obsTrue==1){
+        canMove=checkBoard(board,obsPosition);
+    }
+    return canMove; /*Function returns a 1 if its possible to move a token on a normal square*/
+                    /*Function returns a 2 if its possible to move a token on a obstacle square*/
+}
+
+int checkBoard(square board[NUM_ROWS][NUM_COLUMNS],int column){
+    for(int i=0; i<column;i++){
+            for(int j=0; j<=NUM_ROWS;j++){
+                if(board[j][i].numTokens>0){
+                    return 0;
+            }
+        }
+    }
+    return 2; /*Function returns a 2 if its possible to move a token on a obstacle square*/
+}
 
