@@ -114,7 +114,7 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
         i++;
     }
     
-    for (int i=0; i<1; i++)
+    for (int i=0; i<4; i++)
     {
         for(int j=0; j<numPlayers; j++)
         {
@@ -156,6 +156,12 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
     int row,column,choice=3, winner=0;
     int loop=1;
     int i=0;
+    
+    for(int j=0; j<numPlayers; j++)
+    {
+        players[j].numTokensLastCol=0;
+    }
+    
     while(loop==1){
         if(i>numPlayers-1)
             i=0;
@@ -245,10 +251,14 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 {
                     if(board[roll][column].numTokens>0)
                     {
-                        if(board[roll][column].type==OBSTACLE && checkType==1){/*Checks if token is on a obstacle square and hasn't been checked if it can move*/
-                            
+                        if(board[roll][column].type==OBSTACLE && checkType==1)/*Checks if token is on a obstacle square and hasn't been checked if it can move*/
+                        { 
                             if(checkBoard(board,column)==1)
                             {
+                                if(column==7 && (board[roll][column].stack->col==players[i].col))
+                                {
+                                    players[i].numTokensLastCol++;
+                                }  
                                 playerMovement(board,roll,column,0,1);
                                 loopD=0;
                             }
@@ -257,6 +267,10 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                         }
                         else
                         {
+                            if(column==7 && (board[roll][column].stack->col==players[i].col))
+                            {
+                                players[i].numTokensLastCol++;
+                            }  
                             playerMovement(board,roll,column,0,1);
                             loopD=0; 
                         }
@@ -280,13 +294,15 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
             printf("No token on row %d to move\n",roll);
         }
         
-        i++;
-/*****************************************************/        
-        if(players[i].numTokensLastCol==1)
+        
+/*****************************************************/  
+        if(players[i].numTokensLastCol==3)
         {
-            printf("WINNER: %s\n", players[i].playername);
+            printf("WINNER: %s (%s)\n", players[i].playername ,players[i].playerColour);
             loop=0;
         }
+        
+        i++;
     }  
 }
 

@@ -37,6 +37,14 @@ struct token * push(player value, struct token *top);
 
 struct token * pop(struct token *top);
 
+int moveAndObsCheck(square board[NUM_ROWS][NUM_COLUMNS], int row);
+
+int checkBoard(square board[NUM_ROWS][NUM_COLUMNS],int column);
+
+
+
+
+
 
 
 
