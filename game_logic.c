@@ -114,7 +114,7 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
         i++;
     }
     
-    for (int i=0; i<6; i++)
+    for (int i=0; i<1; i++)
     {
         for(int j=0; j<numPlayers; j++)
         {
@@ -155,10 +155,10 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
 void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPlayers){ 
     int row,column,choice=3, winner=0;
     int loop=1;
+    int i=0;
     while(loop==1){
-        int i=0;
-
-        //TO BE IMPLEMENTED#
+        if(i>numPlayers-1)
+            i=0;
         printf("%s (%s) move a token up/down? [1]Yes [0]No:", players[i].playername,players[i].playerColour);
         scanf("%d",&choice);
         
@@ -279,19 +279,14 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
         {
             printf("No token on row %d to move\n",roll);
         }
+        
+        i++;
 /*****************************************************/        
         if(players[i].numTokensLastCol==1)
         {
             printf("WINNER: %s\n", players[i].playername);
             loop=0;
         }
-        
-        /*i++;
-        
-        if(i==numPlayers && loop==1)
-        {
-            i=0;
-        }*/
     }  
 }
 
