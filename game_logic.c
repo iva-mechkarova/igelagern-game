@@ -196,7 +196,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                                 if(board[row][column].type==OBSTACLE && checkBoard(board,column)!=2)
                                     printf("Stuck in Obstacle, Try again!\n");
                                 else
-                                    loopA=1;
+                                    loopA=0;
                             }
                             else{printf("You don't have a token here, Try again!\n");}
                                
@@ -256,20 +256,23 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 else
                     printf("Invalid column, Try again!\n");           
             }
-            playerMovement(board,roll,column,0,1);
             if(column==7)
-                checkLastColumnCol();
+                checkNumTokensLastCol(board,column,roll,numPlayers,players);
+            playerMovement(board,roll,column,0,1);
             print_board(board); 
         }
         else
             printf("No token on row %d to move\n",roll);
         
         
-/*****************************************************/  
-        if(players[i].numTokensLastCol==3)
+/*****************************************************/ 
+        for(int k=0; k<numPlayers; k++)
         {
-            printf("WINNER: %s (%s)\n", players[i].playername ,players[i].playerColour);
-            loop=0;
+            if(players[k].numTokensLastCol==3)
+            {
+                printf("WINNER: %s (%s)\n", players[k].playername ,players[k].playerColour);
+                loop=0;
+            }          
         }
         
         i++;
@@ -279,7 +282,10 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
 int rollDice()
 {
     srand(time(NULL));
-    int roll = rand() % 6;
+    int roll;
+    printf("Roll:");
+    scanf("%d",&roll);
+    //int roll = rand() % 6;
     return roll;
     
 }
@@ -357,7 +363,15 @@ int checkBoard(square board[NUM_ROWS][NUM_COLUMNS],int column){
     return 2; /*Function returns a 2 if its possible to move a token on a obstacle square*/
 }
 
-void checkLastColumnCol(){
-    
+void checkNumTokensLastCol(square board[NUM_ROWS][NUM_COLUMNS], int column, int roll, int numPlayers, player players[])
+{
+    for(int i=0; i<numPlayers; i++)
+    {
+        if(players[i].col==board[roll][column].stack->col)
+        {
+            players[i].numTokensLastCol++;
+            break;
+        }
+    }
 }
 

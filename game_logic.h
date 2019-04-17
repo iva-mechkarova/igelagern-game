@@ -41,6 +41,8 @@ int moveAndObsCheck(square board[NUM_ROWS][NUM_COLUMNS], int row);
 
 int checkBoard(square board[NUM_ROWS][NUM_COLUMNS],int column);
 
+void checkNumTokensLastCol(square board[NUM_ROWS][NUM_COLUMNS], int column, int roll, int numPlayers, player players[]);
+
 
 
 
