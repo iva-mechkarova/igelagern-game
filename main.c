@@ -1,59 +1,51 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /* 
  * File:   main.c
- * Author: Morgan
+ * Author: Morgan & Iva
  *
- * Created on 06 March 2019, 12:11
+ * Calls all functions necessary to initialize the game, play the game and 
+ * identify a winner
+ * 
  */
 
-#include "game_init.h"
-#include "game_logic.h"
-#include <stdio.h>
+#include "game_init.h" //Library which holds function prototypes for initilization & structs & enums for game
+#include "game_logic.h" //Library which holds function prototypes to play the game
+#include <stdio.h> //Standard input/output library in C
 
 
 /*
- * 
+ * Begin function main execution
  */
 int main(int argc, char** argv) {
     
     
-    //the board is defined as a 2-Dimensional array of squares
+    //The board is defined as a 2-Dimensional array of squares
     square board[NUM_ROWS][NUM_COLUMNS];
     
-    //an array containing the players (MAX 6 players)
+    //An array containing the players (MAX 6 players)
     player players[6];
     
-    //the number of players
+    //The number of players
     int numPlayers =0;
     
-    //creates the squares of the board
+    //Creates the squares of the board
     initialize_board(board);
     
-    //prints the board
-    
-    //creates the players
+    //Creates the players
     numPlayers = initialize_players(players);
     
-    //initilize colour
+    //Initialize color
     initialize_colour(players,numPlayers);
+    
+    //Prints the board
     print_board(board);
     
-    //asks each player to place their tokens
-    //on the first column of the board
+    //Asks each player to place their tokens on first column of the board
     place_tokens(board, players, numPlayers);
-    
-    
-    
-    //manages the turns of the game and identifies a winner
+
+    //Manages the turns of the game and identifies a winner
     play_game(board, players, numPlayers);
-    
-    
+       
     return 0;
 
-}
+} //End function main
 
