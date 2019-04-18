@@ -18,6 +18,10 @@
 //Function prototype for printing a line 
 void printLine(); 
 
+int askRow();
+
+int askColumn();
+
 //Function prototype for moving token up/down or forward 
 void playerMovement(square board[NUM_ROWS][NUM_COLUMNS],int row,int column,int upDown,int forward);
 
@@ -129,9 +133,9 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
     int selectedSquare = 0; //Initialize selectedSquare to 0
     int i=0; //Initialize conter to 0
     //Loop to initialize all squares on board
-    while(i<6){ 
+    while(i<NUM_ROWS){ 
         int j=0; //Initialize counter for columns to 0
-        while(j<8){
+        while(j<NUM_COLUMNS){
             board[i][j].numTokens=0; //Initialize numTokens of each square to 0
             top[i][j]=NULL; //Initialize top of each square to NULL
             curr[i][j]=NULL; //Initialize curr of each square to NULL
@@ -213,32 +217,20 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
             int loopA=1; //Determines when to exit loop 
             while (loopA==1)
             {
-                printf("Select a row [0-5]:"); //Prompt user to select row of token they wish to move up/down
-                scanf("%d",&row); //Obtain value from user 
-                if(row>=0&&row<=5) //Checks that row is valid/in range 
-                {
-                    int loopB=1; //Determines when to exit inner loop for selecting column
-                    while (loopB==1)
-                    {
-                        printf("Select a column [0-8]:"); //Prompt user to select column of token they wish to move up/down   
-                        scanf("%d",&column); //Obtain value from user 
-                        if(column>=0&&column<=8) //Checks that column is valid/in range
-                        {
-                            loopB=0; //Exit inner loop if column is valid 
-                            if(board[row][column].numTokens>0 && board[row][column].stack->col==players[i].col) //Checks that selected square contains their token 
-                            {
-                                if(board[row][column].type==OBSTACLE && checkBoard(board,column)!=2) //Checks if the selected token is stuck in obstacle square 
-                                    printf("Stuck in Obstacle, Try again!\n");
-                                else
-                                    loopA=0; //Exit loop
-                            }
-                            else{printf("You don't have a token here, Try again!\n");} //If selected square doesn't contain player's token loop again 
-                               
-                        }
-                        else{printf("Invalid Column, Try again!\n");} //If column is out of range print error message and loop again 
-                    }
+                row=askRow();
+                if(row==9){
+                    break;
                 }
-                else{printf("Invalid Row, Try again!\n");} //If row is out of range print error message and loop again
+                column=askColumn();
+                if(board[row][column].numTokens>0 && board[row][column].stack->col==players[i].col) //Checks that selected square contains their token 
+                {
+                    if(board[row][column].type==OBSTACLE && checkBoard(board,column)!=2) //Checks if the selected token is stuck in obstacle square 
+                        printf("Stuck in Obstacle, Try again!\n");
+                    else
+                        loopA=0; //Exit loop
+                }
+                else
+                    printf("You don't have a token here, Try again!\n"); //If selected square doesn't contain player's token loop again 
             }
             
 /******************************************************************************/  
@@ -280,11 +272,8 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
             int loopD=1; //Determines when to exit loop 
             while(loopD==1)
             {
-                printf("%s (%s) select a column[0-7]:", players[i].playername,players[i].playerColour); //Prompt user to select column of token they wish to move
-                scanf("%d",&column); //Obtain value from user 
-                if(column>=0 && column<8) //Checks that column is valid/in range i.e. 0-7 (cannot move token in column 8)
-                {
-                    if(board[roll][column].numTokens>0) //Checks that selected square contains at least 1 token 
+                column=askColumn();
+                if(board[roll][column].numTokens>0) //Checks that selected square contains at least 1 token 
                     {
                         if((board[roll][column].type==OBSTACLE && checkType==1) && (checkBoard(board,column)!=2))/*Checks if token is on a obstacle square and hasn't been checked if it can move and if it can be moved*/
                             printf("Stuck in Obstacle, Try again!\n");
@@ -293,9 +282,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                     }
                     else
                         printf("No token on this square, Try again!\n"); //If there is no token on selected square loop again 
-                }
-                else
-                    printf("Invalid column, Try again!\n"); //If choice is invalid loop again          
+                
             }
             if(column==7) //If a token is moved from column 7 to column 8 then numTokensLastCol must be incremented for whichever player owns the token 
                 checkNumTokensLastCol(board,column,roll,numPlayers,players); //Checks who's token has been moved to column 8 and increments how many tokens this player has in last column
@@ -418,5 +405,33 @@ void checkNumTokensLastCol(square board[NUM_ROWS][NUM_COLUMNS], int column, int 
             break;
         }
     }
+}
+
+int askRow()
+{
+    int row,loop=1;
+    while(loop==1){
+        printf("Select a row [0-5] or [9]Cancel:"); //Prompt user to select row of token they wish to move up/down
+    scanf("%d",&row); //Obtain value from user 
+    if(row>=0&&row<NUM_ROWS || row==9)//Checks that row is valid/in range 
+        loop=0;
+    else
+        printf("Invalid Row, Try again!\n"); //If row is out of range print error message and loop again
+    }
+    return row;
+}
+
+int askColumn()
+{
+    int column,loop=1;
+    while(loop==1){
+        printf("Select a Column [0-7]:"); //Prompt user to select row of token they wish to move up/down
+    scanf("%d",&column); //Obtain value from user 
+    if(column>=0&&column<NUM_COLUMNS-1)//Checks that row is valid/in range 
+        loop=0;
+    else
+        printf("Invalid Column, Try again!\n"); //If row is out of range print error message and loop again
+    }
+    return column;
 }
 
