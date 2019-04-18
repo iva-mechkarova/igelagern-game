@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
     //Manages the turns of the game and identifies a winner
     play_game(board, players, numPlayers);
        
-    return 0;
+    return 0; //If a 0 is returned it indicates that the program has run successfully 
 
 } //End function main
 

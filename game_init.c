@@ -81,7 +81,7 @@ void initialize_colour(player players[],int numPlayers){
     //Loop through each player to initialize their colour 
     while(i<numPlayers)
     {
-        printf("%s Select a colour:",players[i].playername); //Prompt user for input of colour 
+        printf("%s select a colour:",players[i].playername); //Prompt user for input of colour 
         scanf("%d",&option); //Obtain value int value from user which corresponds to a colour e.g 1=RED, 2=BLU 
         
         //Check which colour the player has selected and execute the corresponding case 
