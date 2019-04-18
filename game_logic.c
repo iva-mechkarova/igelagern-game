@@ -57,13 +57,16 @@ struct token *curr[NUM_ROWS][NUM_COLUMNS]; //Declare pointer for current element
 char print_token(token *t,char **colC,square type){
     /*When a token is on an obstacle square print color in white to indicate that the
     square is an obstacle*/
+#ifdef COLOR_TRUE
     if(type.type==OBSTACLE){
+#endif
         if((*t).col== PINK) *colC="P";
         if((*t).col== RED) *colC="R";
         if((*t).col== BLU) *colC="B";
         if((*t).col== GREEN) *colC="G";
         if((*t).col== CYAN) *colC="C";
-        if((*t).col== YELLOW) *colC="Y";       
+        if((*t).col== YELLOW) *colC="Y";    
+#ifdef COLOR_TRUE
     }
     else{
         /*If a token is on a normal square print the first letter of the color in
@@ -75,6 +78,7 @@ char print_token(token *t,char **colC,square type){
         if((*t).col== CYAN) *colC="\033[1;36mC\033[0m";
         if((*t).col== YELLOW) *colC="\033[1;33mY\033[0m";
     }
+#endif
 }
 
 /*

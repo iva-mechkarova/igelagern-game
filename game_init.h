@@ -16,6 +16,7 @@
 //Number of columns of the board
 #define NUM_COLUMNS 9
 
+#define COLOR_TRUE /*Change to "COLOR_FALSE" if errors showing colours*/
 
 //Types of squares
 //In an obstacle square the token cannot be moved until all other tokens are at least in the same column as the obstacle square
