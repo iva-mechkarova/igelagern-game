@@ -6,13 +6,11 @@
  * and each player's colour before the game starts 
  * 
  */
-
-
+/*****************************************************/ 
 #include "game_init.h" //Library which holds function prototypes for initilization & structs & enums for game
 #include <stdio.h> //Standard input/output library in C
 #include <string.h> //Standard library in C for string functions (needed for strtok)
-
-
+/*****************************************************/ 
 /*
  * This function creates the board for the first time
  * 
@@ -35,7 +33,6 @@ void initialize_board(square board[NUM_ROWS][NUM_COLUMNS]){
         }
     }
 }
-
 /*****************************************************/ 
 /*
  * This function creates players for the first time
@@ -52,9 +49,8 @@ int initialize_players(player players[]){
         fgets(players[i].playername,32,stdin); //Obtain playername from user 
         strtok(players[i].playername, "\n"); //Splits string into tokens - If carriage return is entered it is not the name of a user
         if(players[i].playername[0] == '\n') //Checks if carriage return symbol is entered
-            break; //If it is, do not ask for more playernames i.e. break from the loop
+            break;
         i++; //Increment counter 
-        
     }
     return i; //Return number of players provided as input 
 }
@@ -114,6 +110,7 @@ void initialize_colour(player players[],int numPlayers){
             case 6: players[i].col=CYAN;players[i].playerColour="\033[1;36mCyan\033[0m";
             default: break;
 #endif
+/*****************************************************/
 #ifdef COLOR_FALSE
             case 1: players[i].col=RED;players[i].playerColour="RED"; 
                     break;
@@ -128,6 +125,7 @@ void initialize_colour(player players[],int numPlayers){
             case 6: players[i].col=CYAN;players[i].playerColour="CYAN";
             default: break;
 #endif
+/*****************************************************/
         }
         int loop=0; //Initialize variable "loop" to 0
         //Loop to check if selected colour has already been chosen by another player
@@ -141,6 +139,7 @@ void initialize_colour(player players[],int numPlayers){
                 }
         }
         if(loop==0)
-            i++; //Increment i 
+            i++; //Increment i
     }
 }
+/*****************************************************/

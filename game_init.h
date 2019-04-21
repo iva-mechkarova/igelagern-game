@@ -4,8 +4,7 @@
  * 
  * This file holds all function prototypes to initialize the board, the players 
  * and each player's colour before the game starts. It also declares enums and 
- * structs which will be used throughout the program.
- * 
+ * structs which will be used throughout the program. 
  */
 
 //Number of rows of the board

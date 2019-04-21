@@ -1,20 +1,16 @@
-/* 
- * File:   game_logic.c
+/* File:   game_logic.c
  * Author: Morgan & Iva
- *
  * This file holds all functions required to play the game - function
  * to place tokens at the beginning of the game, function to play the game and
  * function to print the board after each turn/move
- * 
  */
-
-
+/*****************************************************/
 #include "game_init.h" //Library which holds function prototypes for initilization & structs & enums for game
 #include "game_logic.h" //Library which holds function prototypes to play the game
 #include <stdio.h> //Standard input/output library in C
 #include <time.h> //Needed for srand(time(NULL)) to work
 #include <stdlib.h> //Standard C library which includes function such as memory allocation & rand() 
-
+/*****************************************************/
 //Function prototype for printing a line 
 void printLine(); 
 
@@ -52,7 +48,7 @@ void checkNumTokensLastCol(square board[NUM_ROWS][NUM_COLUMNS], int roll, int nu
 
 struct token *top[NUM_ROWS][NUM_COLUMNS]; //Declare pointer to top of each stack
 struct token *curr[NUM_ROWS][NUM_COLUMNS]; //Declare pointer for current element in each stack 
-
+/*****************************************************/
 /*
  * Returns the first letter associated with the color of the token
  * 
@@ -61,7 +57,7 @@ struct token *curr[NUM_ROWS][NUM_COLUMNS]; //Declare pointer for current element
  */
 char print_token(token *t,char **colC,square type){
     /*When a token is on an obstacle square print color in white to indicate that the
-    square is an obstacle*/
+    square is an obstacle only if color is ture*/
 #ifdef COLOR_TRUE
     if(type.type==OBSTACLE){
 #endif
@@ -71,7 +67,7 @@ char print_token(token *t,char **colC,square type){
         if((*t).col== GREEN) *colC="G";
         if((*t).col== CYAN) *colC="C";
         if((*t).col== YELLOW) *colC="Y";    
-#ifdef COLOR_TRUE
+#ifdef COLOR_TRUE /*Prints color if true*/
     }
     else{
         /*If a token is on a normal square print the first letter of the color in
@@ -85,12 +81,8 @@ char print_token(token *t,char **colC,square type){
     }
 #endif
 }
-
-/*
- * Prints the board
- * 
- * Input: the board to be printed. 
- */
+/*****************************************************/
+/* Prints the board Input: the board to be printed. */
 void print_board(square board[NUM_ROWS][NUM_COLUMNS]){
     printf("\n\n                THE BOARD\n");
     for(int i =0; i < NUM_ROWS; i++){
@@ -122,17 +114,14 @@ void print_board(square board[NUM_ROWS][NUM_COLUMNS]){
     //prints the number of the columns at the end of the board
     printf("     0   1   2   3   4   5   6   7   8\n\n\n");
 }
-
-/*
- * Prints a horizontal line 
- */
+/*****************************************************/
+/* Prints a horizontal line */
 void printLine(){
   printf("   -------------------------------------\n");  
 }
-
+/*****************************************************/
 /*
  * Place tokens in the first column of the board
- * 
  * Input: board - a 6x9 array of squares that represents the board
  *        players - the array of the players
  *        numPlayers - the number of players  
@@ -140,7 +129,7 @@ void printLine(){
 void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPlayers){
     int minNumOfTokens = 0; //Initialize min number of tokens to 0
     int selectedSquare = 0; //Initialize selectedSquare to 0
-    int i=0; //Initialize conter to 0
+    int i=0; //Initialize counter to 0
     //Loop to initialize all squares on board
     while(i<NUM_ROWS){ 
         int j=0; //Initialize counter for columns to 0
@@ -152,7 +141,7 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
         }
         i++; //Increment counter for rows
     }
-    
+/*****************************************************/
     //Loop to allow each player to place their 4 tokens on the first column
     for (int i=0; i<4; i++)
     {
@@ -160,6 +149,7 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
         {
             int loop=1; //This variable will be used to determine when to exit the while loop
             while(loop==1){
+                int tokenMatch=0; /*if the token match is 1 means only one square to place token and color matching on stack is allowed*/
                 selectedSquare=askRowPlaceTokens(players[j]); //Set selected square value to value obtained from user in function askRowPlaceTokens
                     //Check that the player has selected a square which contains min tokens and also does not contain their token on top already 
                 if ((board[selectedSquare][0].numTokens==minNumOfTokens && minNumOfTokens==0 ) || (board[selectedSquare][0].numTokens==minNumOfTokens && board[selectedSquare][0].stack->col!=players[j].col))
@@ -170,7 +160,8 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
                     board[selectedSquare][0].numTokens++; //Increment number of tokens on the selected square 
                     loop=0; //Will now exit while loop
                 }
-                else{printf("ERROR: This square does not contain minimum number of tokens (%d tokens) OR your token is on top\n", minNumOfTokens);}   
+                else
+                    printf("This square does not contain minimum number of tokens (%d tokens) OR your token is on top\n", minNumOfTokens);
             }
             if (((numPlayers*i)+j+1)%NUM_ROWS==0) 
                 minNumOfTokens++; //Increment min number of tokens 
@@ -178,12 +169,10 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
         }
     }
 }
-
-
+/*****************************************************/
 /*
  * Play the game - ask each player if they wish to move one of their tokens up or
  * down and then allow them to roll and move a token forward
- * 
  * Input: board - a 6x9 array of squares that represents the board
  *        players - the array of the players
  *        numPlayers - the number of players  
@@ -195,10 +184,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
     
     //Loop to initialize numTokensLastCol to 0 for each player 
     for(int j=0; j<numPlayers; j++)
-    {
         players[j].numTokensLastCol=0; //Initialize numTokensLastCol to 0
-    }
-    
     //Begin the game 
     while(loop==1){
         //If i exceeds numPlayers-1 set it back to 0 as it is the first player's turn again
@@ -234,10 +220,8 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 }
                 else
                     printf("You don't have a token here, Try again!\n"); //If selected square doesn't contain player's token loop again 
-            }
-            
-/******************************************************************************/  
-            
+            }  
+/******************************************************************************/             
             int upDown=3; //Initialize upDown to 3 as this is not an option, only 0 (Down) and 1 (Up) are 
             //Allow player to select if they wish to move the token up or down if the token is in rows 1-4 i.e. is able to move both up or down 
             if(row>0 && row<5)
@@ -259,15 +243,10 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 playerMovement(board,row,column,1,0); //Move token down
             print_board(board); //Print the board after token has been moved up or down  
         }
- 
 /******************************************************************************/  
-        
         int roll = rollDice(); //Call function to roll dice 
-        
-        printf("%s (%s) you rolled a %d\n",players[i].playername,players[i].playerColour, roll); //Inform player what they have rolled 
-        
+        printf("%s (%s) you rolled a %d\n",players[i].playername,players[i].playerColour, roll); //Inform player what they have rolled     
 /******************************************************************************/
-        
         int checkType=moveAndObsCheck(board,roll); /*check possible move 1- normal has been checked 2- obstacle has been checked and normal can be moved*/
         /*this value is needed as it is possible there is a token that can and a token that cant be moved in the same row*/
         if (checkType==1 || checkType==2) /*only enters loop if there is a possible move*/
@@ -284,8 +263,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                             loopD=0; /*possible move can exit loop*/
                     }
                     else
-                        printf("No token on this square, Try again!\n"); //If there is no token on selected square loop again 
-                
+                        printf("No token on this square, Try again!\n"); //If there is no token on selected square loop again  
             }
             if(column==7) //If a token is moved from column 7 to column 8 then numTokensLastCol must be incremented for whichever player owns the token 
                 checkNumTokensLastCol(board,roll,numPlayers,players); //Checks who's token has been moved to column 8 and increments how many tokens this player has in last column
@@ -293,8 +271,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
             print_board(board); //Print the board after a token has been moved
         }
         else
-            printf("No token on row %d to move\n",roll); //If the number rolled corresponds to a row with no tokens the player cannot move any token 
-           
+            printf("No token on row %d to move\n",roll); //If the number rolled corresponds to a row with no tokens the player cannot move any token  
 /******************************************************************************/ 
         
         //Loop to check if any player has won the game at the end of each player's move 
@@ -306,11 +283,10 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 loop=0; //Breaks from the loop and the game ends 
             }          
         }
-        
         i++; //Increment counter which keeps track of which player's go it is
     }  
 }
-
+/*****************************************************/
 /*
  * Function which acts as rolling a dice 
  * 
@@ -388,7 +364,7 @@ struct token * pop(struct token *top){
  * This function checks for possible moves and breaks when if finds a move
  * 
  * Input: Board (2-D array of squares) and row (number rolled on dice)
- * 
+ *
  * Output: If it returns 1 the first possible move is on a normal square and possible tokens on obstacles haven't been checked.
  * When 2 the first move found was on a obstacle square and it can be moved also meaning all tokens on that row can be moved.
  * When 0 no possible moves
@@ -399,7 +375,7 @@ int moveAndObsCheck(square board[NUM_ROWS][NUM_COLUMNS], int row){
     int obsPosition; /*holds the obstacle column*/
     int canMove=0; //Initialize to 0
     
-    for(int i=0;i<NUM_COLUMNS;i++)/*less than num column as we don't ant to check column 8*/
+    for(int i=0;i<NUM_COLUMNS-1;i++)/*less than num column-1 as we don't ant to check column 8*/
     {
         if(canMove==1 || canMove==2) /*breaks if there is a possible move*/
             break;
@@ -416,7 +392,7 @@ int moveAndObsCheck(square board[NUM_ROWS][NUM_COLUMNS], int row){
     return canMove; /*Function returns a 1 if its possible to move a token on a normal square*/
                     /*Function returns a 2 if its possible to move a token on a obstacle square*/
 }
-
+/*****************************************************/
 /*
  * This function checks if its possible to move token on obstacle square yet, i.e. it
  * checks if there are any tokens in any of the columns before the obstacle square -
@@ -439,7 +415,7 @@ int checkBoard(square board[NUM_ROWS][NUM_COLUMNS],int column){
     }
     return 2; /*Function returns a 2 if its possible to move a token on a obstacle square*/
 }
-
+/*****************************************************/
 /*
  * This function checks if any of the players' tokens reach the last column and if 
  * they do it increments the variable storing how many tokens they have in last column
@@ -460,7 +436,7 @@ void checkNumTokensLastCol(square board[NUM_ROWS][NUM_COLUMNS], int roll, int nu
         }
     }
 }
-
+/*****************************************************/
 /*
  * This function asks the user to select the row of where they'd like to place a token
  * 
@@ -483,7 +459,7 @@ int askRowPlaceTokens(player player)
     
     return row; //Return value obtained for row 
 }
-
+/*****************************************************/
 /*
  * This function asks the user to select a row 
  * 
@@ -503,17 +479,15 @@ int askRow(player player)
         else
             printf("Invalid Row, Try again!\n"); //If row is out of range print error message and loop again
     }
-    
     return row; //Return value obtained for row 
 }
-
+/*****************************************************/
 /*
  * This function asks the user to select a column 
  * 
  * Input: Array of players 
  * 
- * Output: The number of the column selected 
- * 
+ * Output: The number of the column selected
  */
 int askColumn(player player)
 {
@@ -526,7 +500,6 @@ int askColumn(player player)
         else
             printf("Invalid Column, Try again!\n"); //If column is out of range print error message and loop again
     }
-    
     return column; //Return value obtained for column
 }
-
+/*****************************************************/
