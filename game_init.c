@@ -49,8 +49,19 @@ int initialize_players(player players[]){
         fgets(players[i].playername,32,stdin); //Obtain playername from user 
         strtok(players[i].playername, "\n"); //Splits string into tokens - If carriage return is entered it is not the name of a user
         if(players[i].playername[0] == '\n') //Checks if carriage return symbol is entered
-            break;
-        i++; //Increment counter 
+        {
+            //Check if at least 2 players have been provided as input 
+            if (i>1)
+            {
+                break; //Stop asking user to input players once carriage return symbol has been entered 
+            }
+            else
+            {
+                printf("You must have at least 2 players\n");
+            }
+        }
+        else
+            i++; //Increment counter 
     }
     return i; //Return number of players provided as input 
 }

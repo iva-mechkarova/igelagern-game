@@ -14,11 +14,8 @@
 //Function prototype for printing a line 
 void printLine(); 
 
-//Function prototype to prompt user to select where they wish to place a token 
-int askRowPlaceTokens(player player);
-
 //Function prototype to prompt user to select a row and obtain value for row
-int askRow(player player);
+int askRow(player player, int canCancel);
 
 //Function prototype to prompt user to select a column and obtain value for column
 int askColumn(player player);
@@ -150,7 +147,7 @@ void place_tokens(square board[NUM_ROWS][NUM_COLUMNS], player players[], int num
             int loop=1; //This variable will be used to determine when to exit the while loop
             while(loop==1){
                 int tokenMatch=0; /*if the token match is 1 means only one square to place token and color matching on stack is allowed*/
-                selectedSquare=askRowPlaceTokens(players[j]); //Set selected square value to value obtained from user in function askRowPlaceTokens
+                selectedSquare=askRow(players[j],0); //Set selected square value to value obtained from user in function askRowPlaceTokens
                     //Check that the player has selected a square which contains min tokens and also does not contain their token on top already 
                 if ((board[selectedSquare][0].numTokens==minNumOfTokens && minNumOfTokens==0 ) || (board[selectedSquare][0].numTokens==minNumOfTokens && board[selectedSquare][0].stack->col!=players[j].col))
                 {
@@ -206,7 +203,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
             int loopA=1; //Determines when to exit loop 
             while (loopA==1)
             {
-                row=askRow(players[i]); //Set row value to value for row obtained from user 
+                row=askRow(players[i],1); //Set row value to value for row obtained from user 
                 if(row==9){
                     break; //If user chooses to cancel i.e. select 9 exit the loop
                 }
@@ -392,6 +389,7 @@ int moveAndObsCheck(square board[NUM_ROWS][NUM_COLUMNS], int row){
     return canMove; /*Function returns a 1 if its possible to move a token on a normal square*/
                     /*Function returns a 2 if its possible to move a token on a obstacle square*/
 }
+
 /*****************************************************/
 /*
  * This function checks if its possible to move token on obstacle square yet, i.e. it
@@ -415,6 +413,7 @@ int checkBoard(square board[NUM_ROWS][NUM_COLUMNS],int column){
     }
     return 2; /*Function returns a 2 if its possible to move a token on a obstacle square*/
 }
+
 /*****************************************************/
 /*
  * This function checks if any of the players' tokens reach the last column and if 
@@ -436,51 +435,34 @@ void checkNumTokensLastCol(square board[NUM_ROWS][NUM_COLUMNS], int roll, int nu
         }
     }
 }
-/*****************************************************/
-/*
- * This function asks the user to select the row of where they'd like to place a token
- * 
- * Input: Array of players 
- * 
- * Output: The number of the row selected 
- * 
- */
-int askRowPlaceTokens(player player)
-{
-    int row,loop=1; //Declare variable to store row and also another variable to determine when to exit loop 
-    while(loop==1){
-        printf("%s (%s) place token on row[0-5]:", player.playername, player.playerColour); //Prompt user to select which row they'd like to place a token in 
-        scanf("%d",&row); //Obtain value from user 
-        if(row>=0&&row<NUM_ROWS)//Checks that row is valid/in range 
-            loop=0; //Will exit loop 
-        else
-            printf("Invalid Row, Try again!\n"); //If row is out of range print error message and loop again
-        }
-    
-    return row; //Return value obtained for row 
-}
+
 /*****************************************************/
 /*
  * This function asks the user to select a row 
  * 
- * Input: Array of players 
+ * Input: Array of players, integer where 1 means move can be canceled i.e. when
+ * sidestepping and 0 when cannot be canceled i.e. placing tokens
  * 
  * Output: The number of the row selected 
  * 
  */
-int askRow(player player)
+int askRow(player player,int canCancel)
 {
-    int row,loop=1; //Declare variable to store row and also another variable to determine when to exit loop 
+    int row,loop=1; //Declare variable to store row and also another variable to determine when to exit loop
     while(loop==1){
-        printf("%s (%s) select a row [0-5] or [9]Cancel:", player.playername, player.playerColour); //Prompt user to select row of token they wish to move up/down
-        scanf("%d",&row); //Obtain value from user 
-        if(row>=0&&row<NUM_ROWS || row==9)//Checks that row is valid/in range 
+        if(canCancel==1)
+            printf("%s (%s) select a row [0-5] or [9]Cancel:", player.playername, player.playerColour); //Prompt user to select row of token they wish to move up/down
+        else
+            printf("%s (%s) select a row [0-5]:", player.playername, player.playerColour);
+        scanf("%d",&row); //Obtain value from user
+        if(row>=0&&row<NUM_ROWS || (canCancel==1 && row==9))//Checks that row is valid/in range
             loop=0; //Will exit loop
         else
             printf("Invalid Row, Try again!\n"); //If row is out of range print error message and loop again
     }
-    return row; //Return value obtained for row 
+    return row; //Return value obtained for row
 }
+
 /*****************************************************/
 /*
  * This function asks the user to select a column 
