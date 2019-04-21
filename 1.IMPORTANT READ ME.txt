@@ -1,0 +1,1 @@
+If color print outs do not work please chnage code on line 18 in game_init.h from COLOR_TRUE to COLOR_FALSE
