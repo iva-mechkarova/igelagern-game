@@ -38,7 +38,7 @@ int moveAndObsCheck(square board[NUM_ROWS][NUM_COLUMNS], int row);
 
 /*Function prototype to check all squares in columns before token in obstacle square
 in order to see if it can move*/
-int checkBoard(square board[NUM_ROWS][NUM_COLUMNS],int column);
+int checkBoard(square board[NUM_ROWS][NUM_COLUMNS],int column,int row);
 
 //Function prototype to increment how many tokens a player has in the last column 
 void checkNumTokensLastCol(square board[NUM_ROWS][NUM_COLUMNS], int roll, int numPlayers, player players[]);
@@ -210,7 +210,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 column=askColumn(players[i]); //Set column value to value obtained for column from user
                 if(board[row][column].numTokens>0 && board[row][column].stack->col==players[i].col) //Checks that selected square contains their token 
                 {
-                    if(board[row][column].type==OBSTACLE && checkBoard(board,column)!=2) //Checks if the selected token is stuck in obstacle square 
+                    if(board[row][column].type==OBSTACLE && checkBoard(board,column,row)!=1) //Checks if the selected token is stuck in obstacle square 
                         printf("Stuck in Obstacle, Try again!\n");
                     else
                         loopA=0; //Exit loop
@@ -244,9 +244,8 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
         int roll = rollDice(); //Call function to roll dice 
         printf("%s (%s) you rolled a %d\n",players[i].playername,players[i].playerColour, roll); //Inform player what they have rolled     
 /******************************************************************************/
-        int checkType=moveAndObsCheck(board,roll); /*check possible move 1- normal has been checked 2- obstacle has been checked and normal can be moved*/
         /*this value is needed as it is possible there is a token that can and a token that cant be moved in the same row*/
-        if (checkType==1 || checkType==2) /*only enters loop if there is a possible move*/
+        if (moveAndObsCheck(board,roll)==1) /*only enters loop if there is a possible move*/
         {
             int loopD=1; //Determines when to exit loop 
             while(loopD==1)
@@ -254,7 +253,7 @@ void play_game(square board[NUM_ROWS][NUM_COLUMNS], player players[], int numPla
                 column=askColumn(players[i]);
                 if(board[roll][column].numTokens>0) //Checks that selected square contains at least 1 token 
                     {
-                        if((board[roll][column].type==OBSTACLE && checkType==1) && (checkBoard(board,column)!=2))/*Checks if token is on a obstacle square and hasn't been checked if it can move and if it can be moved*/
+                        if(board[roll][column].type==OBSTACLE && checkBoard(board,column,row)!=1)/*Checks if token is on a obstacle square and hasn't been checked if it can move and if it can be moved*/
                             printf("Stuck in Obstacle, Try again!\n");
                         else
                             loopD=0; /*possible move can exit loop*/
@@ -374,7 +373,7 @@ int moveAndObsCheck(square board[NUM_ROWS][NUM_COLUMNS], int row){
     
     for(int i=0;i<NUM_COLUMNS-1;i++)/*less than num column-1 as we don't ant to check column 8*/
     {
-        if(canMove==1 || canMove==2) /*breaks if there is a possible move*/
+        if(canMove==1) /*breaks if there is a possible move*/
             break;
         if(board[row][i].numTokens>0 && board[row][i].type==NORMAL)
         {
@@ -382,12 +381,10 @@ int moveAndObsCheck(square board[NUM_ROWS][NUM_COLUMNS], int row){
         }
         else if(board[row][i].numTokens>0 && board[row][i].type==OBSTACLE){
             obsPosition=i; //obsPosition is set to the column that the obstacle is in
-            canMove=checkBoard(board,obsPosition); //Calls function to check if token in obstacle square can move yet 
+            canMove=checkBoard(board,obsPosition,row); //Calls function to check if token in obstacle square can move yet 
         }
-    }
-    
-    return canMove; /*Function returns a 1 if its possible to move a token on a normal square*/
-                    /*Function returns a 2 if its possible to move a token on a obstacle square*/
+    }    
+    return canMove; /*Function returns a 1 if its possible to move a token */
 }
 
 /*****************************************************/
@@ -398,11 +395,10 @@ int moveAndObsCheck(square board[NUM_ROWS][NUM_COLUMNS], int row){
  * 
  * Input: Board (2-D array of squares) and column of obstacle square
  * 
- * Output: If it returns 0 then the token in the obstacle square cannot move but if 
- * it returns 2 then it can
+ * Output: If it returns 0 then the token in the obstacle square cannot move
  * 
  */
-int checkBoard(square board[NUM_ROWS][NUM_COLUMNS],int column){
+int checkBoard(square board[NUM_ROWS][NUM_COLUMNS],int column,int row){
     //Checks if there is a token in any of the squares in columns before obstacle square 
     for(int i=0; i<column;i++){
             for(int j=0; j<=NUM_ROWS;j++){
@@ -411,7 +407,8 @@ int checkBoard(square board[NUM_ROWS][NUM_COLUMNS],int column){
             }
         }
     }
-    return 2; /*Function returns a 2 if its possible to move a token on a obstacle square*/
+    board[row][column].type=NORMAL;
+    return 1; /*Function returns 1 if its possible to move a token on a obstacle square*/
 }
 
 /*****************************************************/
@@ -435,7 +432,6 @@ void checkNumTokensLastCol(square board[NUM_ROWS][NUM_COLUMNS], int roll, int nu
         }
     }
 }
-
 /*****************************************************/
 /*
  * This function asks the user to select a row 
